@@ -50,10 +50,10 @@ async def get_user_id(user_id: int):
     """
     Takes a user_id (integer) as a parameter
     Prints f"Fetching user {user_id}..."
-    Uses asyncio.sleep(1) to simulate network delay
+    Uses trio.sleep(1) to simulate network delay
     Randomly succeeds or fails:
 
-    If user_id is even, return a dictionary {"id": user_id, "name": f"User {user_id}"}
+    If user_id is even, return a dictionary {"id": user_id, "username": f"User {user_id}"}
     If user_id is odd, raise an exception ValueError(f"User {user_id} not found")
     """
     ### YOUR CODE STARTS HERE
@@ -93,15 +93,15 @@ async def task2():
 
     In this function, we create a list of 5 user IDs (mix of even and odd numbers)
     Calls get_user_data() with this list
-    Prints "Successful results:" followed by the results dictionary
+    Prints "Results:" followed by the results dictionary
     Prints "Errors:" followed by the errors list
 
     Expected Output: 
     Results:
     User 5: {'status': 'error', 'error': 'User 5 not found'}
-    User 4: {'status': 'success', 'data': {'id': 4, 'name': 'User 4'}}
+    User 4: {'status': 'success', 'data': {'id': 4, 'username': 'User 4'}}
     User 3: {'status': 'error', 'error': 'User 3 not found'}
-    User 2: {'status': 'success', 'data': {'id': 2, 'name': 'User 2'}}
+    User 2: {'status': 'success', 'data': {'id': 2, 'username': 'User 2'}}
     User 1: {'status': 'error', 'error': 'User 1 not found'}
     """
     user_ids = [1, 2, 3, 4, 5]
@@ -112,11 +112,11 @@ async def task2():
 
 
 async def download_file(url: str, client: httpx.AsyncClient, name: str, download_dir: str):
-    """Implement an async function for downloading a file and track progress.
+    """Implement an async function for downloading a file from an url.
     This function takes in a httpx.AsyncClient object which you can used to make the download request directly. 
     The function should: 
     1. download the file from the url using client.get 
-    2. save the file to the download_dir directory
+    2. save the file to the download_dir directory as .txt tiles
     """
     ### YOUR CODE STARTS HERE
     raise NotImplementedError("Implement the download_file function")
@@ -127,10 +127,10 @@ async def download_file(url: str, client: httpx.AsyncClient, name: str, download
 async def task3(): 
     """
     In this task, you will use the trio library to download a few books from the Internet. 
-    The list of books as urls are provided in the FILES_TO_DOWNLOAD variable. 
+    The list of books as urls is provided in the FILES_TO_DOWNLOAD variable. 
     In this function, you will: 
-    1. create a directory based on the the DOWNLOAD_DIR variable. 
-    2. use httpx.AsyncClient() to create a client object. 
+    1. create a directory based on the DOWNLOAD_DIR variable. 
+    2. use httpx.AsyncClient() to create a client object. You do not needs to specify any configurations.
     3. use trio.open_nursery() to run download_file for each book in parallel. 
 
     Expected Output: 

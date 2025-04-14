@@ -9,30 +9,20 @@ async def timer():
     """
     Implement a timer function that prints how many seconds have passed every second
     """
-    ### YOUR CODE STARTS HERE
-    i = 1 
-    while True: 
-        await trio.sleep(1)
-        if i ==1: 
-            print(f"{i} second has passed")
-        else: 
-            print(f"{i} seconds have passed")
-        i+=1 
-    ### YOUR CODE ENDS HERE
+    pass 
 
 async def delayed_hello(): 
     """
     Implement a delayed hello function which waits for 2.1 seconds before printing "Hello World"
     """
-    ### YOUR CODE STARTS HERE
-    await trio.sleep(2.1)
-    print("Hello, World!")
-    ### YOUR CODE ENDS HERE
+    pass 
 
 async def task1():
     """
-    In this task, you will use the trio library to write two async functions. 
+    In this task, you will use the trio library to write a async function. 
     Your task is to complete the timer and delayed_hello functions. 
+    Then you will schedule the timer function and then the dealyed hello function using trio.start_soon 
+    within a trio.open_nursery context. 
 
     Expected Output: 
     
@@ -43,14 +33,7 @@ async def task1():
     Completed!
     
     """
-    print("Starting...")
-    TIMEOUT = 2.5
-    with trio.move_on_after(TIMEOUT): 
-        async with trio.open_nursery() as nursery: 
-            nursery.start_soon(timer) # implement the timer function 
-            nursery.start_soon(delayed_hello) # implement the delayed hello function 
-    print("Completed!")
-    return 
+    pass
 
 async def get_user_id(user_id: int):
     """
@@ -62,15 +45,9 @@ async def get_user_id(user_id: int):
     If user_id is even, return a dictionary {"id": user_id, "username": f"User {user_id}"}
     If user_id is odd, raise an exception ValueError(f"User {user_id} not found")
     """
-    ### YOUR CODE STARTS HERE
-    await trio.sleep(1)
-    if user_id % 2 == 0: 
-        return {"id": user_id, "username": f"User {user_id}"}
-    else: 
-        raise ValueError(f"User {user_id} not found")
-    ### YOUR CODE ENDS HERE
+    pass 
 
-async def get_user_data(user_ids: list[int]):
+async def get_user_data(user_ids: list[int]) -> dict:
     """
     1. Takes a list of user_ids as a parameter
     2. Creates an empty results dictionary 
@@ -80,26 +57,10 @@ async def get_user_data(user_ids: list[int]):
         - stores the result in the results dictionary
         - if an exception is raised, it stores the error in the results dictionary
     4. uses trio.open_nursery() to run _fetch_and_store for each user_id in parallel
+    5. return the results dictionary
     """
     
-    results = {}
-    
-    async def _fetch_and_store(user_id): 
-        ### YOUR CODE STARTS HERE
-        try: 
-            result = await get_user_id(user_id)
-            results[user_id] = {"status": "success", "data": result}
-        except ValueError as e: 
-            results[user_id] = {"status": "error", "error": str(e)}
-        ### YOUR CODE ENDS HERE
-    
-    ### YOUR CODE STARTS HERE
-    async with trio.open_nursery() as nursery: 
-        for user_id in user_ids: 
-            nursery.start_soon(_fetch_and_store, user_id)
-    
-    return results
-    ### YOUR CODE ENDS HERE 
+    pass 
 
 async def task2(): 
     """
@@ -133,12 +94,7 @@ async def download_file(url: str, client: httpx.AsyncClient, name: str, download
     1. download the file from the url using client.get 
     2. save the file to the download_dir directory as .txt tiles
     """
-    ### YOUR CODE STARTS HERE
-    response = await client.get(url)
-    with open(os.path.join(download_dir, f'{name}.txt'), "wb") as f:
-        f.write(response.content)
-    ### YOUR CODE ENDS HERE
-    print(f"Finished downloading {name}")
+    pass 
 
 async def task3(): 
     """
@@ -164,16 +120,7 @@ async def task3():
 }
     DOWNLOAD_DIR = "downloads"
 
-   ### YOUR CODE STARTS HERE
-
-    os.makedirs(DOWNLOAD_DIR, exist_ok=True)
-
-    async with httpx.AsyncClient() as client:
-        async with trio.open_nursery() as nursery:
-            for i, (name, url) in enumerate(FILES_TO_DOWNLOAD.items()):
-                    print(f"({i+1}) Downloading {name}...")
-                    nursery.start_soon(download_file, url, client, name, DOWNLOAD_DIR)
-    ### YOUR CODE ENDS HERE
+    pass 
 
 
 async def get_json_from_url_with_semaphore(semaphore:trio.Semaphore, 
@@ -187,16 +134,7 @@ async def get_json_from_url_with_semaphore(semaphore:trio.Semaphore,
     2. Get response from each url and convert into json and then into a dataframe (select the 'countryiso3code', 'date' and 'value')
     3. Send the final df into the send_channel
     """
-    ### YOUR CODE STARTS HERE
-    async with semaphore: 
-        response = await client.get(url)
-        df = pd.DataFrame.from_dict(response.json()[1]).dropna()
-        if len(df) == 0: 
-            pass 
-        else: 
-            await send_channel.send(df[['countryiso3code', 'date', 'value']])
-    
-    ### YOUR CODE ENDS HERE
+    pass 
 
 async def close_after_timeout(send_channel: trio.MemorySendChannel):
     await trio.sleep(3)  # 10 seconds should be enough for 20 requests
@@ -205,7 +143,7 @@ async def close_after_timeout(send_channel: trio.MemorySendChannel):
 
 async def task4(): 
     """
-    In this task, you will use trio's async functionality to assemble an economic database while limiting the number of concurrents.
+    In this task you will combine with a maximum amount web requests. To put together an economic database. 
     In this implementation, you will need two key concepts
     trio.Semaphore: Controls concurrency - limits how many HTTP requests run simultaneously
     trio.open_memory_channel: memory channel buffer that controls data flow between producers and consumers
@@ -231,26 +169,7 @@ async def task4():
 
     base_gdp_url = 'https://api.worldbank.org/v2/country/{country_str}/indicator/NY.GDP.MKTP.CD?date=1999:2019&format=json'
 
-    ## Create memory channel for results 
-    send_channel, receive_channel = trio.open_memory_channel(NUM_RESULTS)
-
-
     ### YOUR CODE STARTS HERE
-    
-    all_dfs = [] 
-    async with httpx.AsyncClient() as client:
-        async with trio.open_nursery() as nursery:
-            semaphore = trio.Semaphore(MAX_THREADS)
-            for i, country in enumerate(country_ids):
-                    url = base_gdp_url.format(country_str=country)
-                    nursery.start_soon(get_json_from_url_with_semaphore, semaphore, 
-                                                      send_channel, url, client)
-    
-            nursery.start_soon(close_after_timeout, send_channel)
-            
-    async for df in receive_channel: 
-        all_dfs.append(df)
-
 
     ### YOUR CODE ENDS HERE
     final_df = pd.concat(all_dfs)
@@ -269,15 +188,14 @@ async def consume_data(receive_channel: trio.MemoryReceiveChannel, all_dfs: list
     This consumer function will append new dfs on the channel to the all_dfs list 
     Since lists are mutable, this function does not need to return anything.
     """
-    async for df in receive_channel:
-        all_dfs.append(df)
+    pass 
 
 
 async def task5(): 
     """
-    Task 5 will be an extension of Task 4. Now, instead of sleeping for a few seconds to wait for the send channel to close, 
-    you will use a consume data function to ingest data as data is added to the channel and implement the outer nursery. 
-    You are making a simpler and faster implementation without using a timeout function.
+    Task 5 will be an extension of task 4. Now instead of sleeping for a few seconds to wait for the send channel to close. 
+    In this task, you will build use a consume data function to ingest data as data is added to the channel and implement and outer nursery. 
+    You are making a simpler implementation without using a timeout function. 
 
     1. Implement consume_data function that uses async for to add every df to the all_dfs list
     2. Implement an outer nursery where the consume_data function is called. 
@@ -296,22 +214,10 @@ async def task5():
 
     base_gdp_url = 'https://api.worldbank.org/v2/country/{country_str}/indicator/NY.GDP.MKTP.CD?date=1999:2019&format=json'
 
-    ## Create memory channel for results 
-    send_channel, receive_channel = trio.open_memory_channel(NUM_RESULTS)
+
 
     ### YOUR CODE STARTS HERE
-    
-    all_dfs = [] 
-    async with httpx.AsyncClient() as client:
-        async with trio.open_nursery() as outer_nursery:
-            outer_nursery.start_soon(consume_data, receive_channel, all_dfs)
-            async with trio.open_nursery() as producer_nursery: 
-                semaphore = trio.Semaphore(MAX_THREADS)
-                for country in country_ids:
-                    url = base_gdp_url.format(country_str=country)
-                    producer_nursery.start_soon(get_json_from_url_with_semaphore, semaphore, 
-                                                    send_channel, url, client)
-            send_channel.close() 
+    pass 
             
     ### YOUR CODE ENDS HERE
     final_df = pd.concat(all_dfs)
@@ -325,96 +231,6 @@ async def task5():
             GDP2 = int(group[group['date'] == '2019']['value'].iloc[0])
             print(country_mapping[id], f"GDP Growth: {(GDP2-GDP1)/GDP1*100}%")
 
-
-class PriorityScheduler: 
-    def add_task(self, coroutine, priority):
-        pass 
-
-    def cancel_task(self, taskid): 
-        pass
-
-    def reschedule(self, task_id, new_priority):
-        pass 
-
-    def run(self): 
-        pass 
-
-async def task6(): 
-    """
-    Create a PriorityScheduler class with the following methods:
-
-    add_task(coro, priority): Add a coroutine with a specified priority (1-5, where 1 is highest)
-    cancel_task(task_id): Cancel a scheduled task by ID
-    reschedule(task_id, new_priority): Change the priority of a task
-    run(): Main execution method that processes tasks according to priority
-
-    Implement these features:
-
-    Tasks with higher priority should generally execute before lower priority tasks
-    The scheduler should allow adding new tasks while other tasks are running
-    Each task should be assigned a unique ID for tracking
-    Include proper cancellation handling with appropriate cleanup
-    Implement statistics tracking that records:
-
-    Average wait time per priority level
-    Number of completed vs canceled tasks
-    Execution time for each task
-
-    Graceful shutdown mechanism:
-    Handle CTRL+C with proper cleanup of resources
-    Allow urgent tasks to complete before shutdown if possible
-
-    The expected output would show tasks executing according to priority, with dynamic additions, 
-    cancellations, and rescheduling affecting the execution order. 
-    The statistics output should show metrics about wait times, completion rates, and execution times.
-
-    """
-    scheduler = PriorityScheduler()
-    
-    # Define some test tasks
-    async def high_priority_task(name):
-        print(f"Starting high priority task {name}")
-        await trio.sleep(2)
-        print(f"Completed high priority task {name}")
-        return f"Result from {name}"
-    
-    async def low_priority_task(name):
-        print(f"Starting low priority task {name}")
-        await trio.sleep(5)
-        print(f"Completed low priority task {name}")
-        return f"Result from {name}"
-    
-    # Add initial tasks
-    task1_id = await scheduler.add_task(high_priority_task("Task1"), priority=1)
-    task2_id = await scheduler.add_task(low_priority_task("Task2"), priority=3)
-    task3_id = await scheduler.add_task(low_priority_task("Task3"), priority=5)
-    
-    # Start the scheduler
-    async with trio.open_nursery() as nursery:
-        nursery.start_soon(scheduler.run)
-        
-        # Add more tasks while scheduler is running
-        await trio.sleep(1)
-        task4_id = await scheduler.add_task(high_priority_task("Task4"), priority=2)
-        
-        # Cancel a task
-        await trio.sleep(0.5)
-        await scheduler.cancel_task(task3_id)
-        
-        # Reschedule a task
-        await trio.sleep(0.5)
-        await scheduler.reschedule(task2_id, new_priority=1)
-        
-        # After 10 seconds, request scheduler shutdown
-        await trio.sleep(10)
-        await scheduler.shutdown()
-    
-    # Print statistics
-    scheduler.print_statistics()
-
-async def task7(): 
-    """
-    """
 
 if __name__ == "__main__":
     # Here we will test the code you have written for each task

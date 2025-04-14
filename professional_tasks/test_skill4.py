@@ -1,27 +1,37 @@
 import pytest
 import trio
 import sys
+import os
+import pandas as pd 
 from io import StringIO
 from contextlib import redirect_stdout
-from skill4_immersive_empty import *
 import shutil
 from unittest.mock import AsyncMock, MagicMock, patch
+import sys
+from conftest import solution_module
+
+
+### pytest test_skill4.py --solution-file=student_solution.py -m task1 
 
 @pytest.mark.task1
 @pytest.mark.trio
 async def test_task1_output():
     """Test that task1 produces the expected output."""
     # Capture stdout
-    captured_output = StringIO()
-    with redirect_stdout(captured_output):
-        await task1()
+    with trio.move_on_after(3) as cancel_scope:
+        captured_output = StringIO()
+        with redirect_stdout(captured_output):
+            await solution_module.task1()
+        
+        # Get the output as a string
+        output = captured_output.getvalue().strip()
+        expected_output = "Starting...\n1 second has passed\n2 seconds have passed\nHello, World!\nCompleted!"
+        
+        # Compare the actual output with the expected output
+        assert output == expected_output, f"Expected:\n{expected_output}\n\nGot:\n{output}"
     
-    # Get the output as a string
-    output = captured_output.getvalue().strip()
-    expected_output = "Starting...\n1 second has passed\n2 seconds have passed\nHello, World!\nCompleted!"
-    
-    # Compare the actual output with the expected output
-    assert output == expected_output, f"Expected:\n{expected_output}\n\nGot:\n{output}"
+    if cancel_scope.cancelled_caught: 
+        pytest.fail("Test timed out")
 
 @pytest.mark.task1
 @pytest.mark.trio
@@ -30,7 +40,7 @@ async def test_timer_output():
     captured_output = StringIO()
     with redirect_stdout(captured_output):
         with trio.move_on_after(2.5):
-            await timer()
+            await solution_module.timer()
     
     output = captured_output.getvalue().strip()
     expected_lines = [
@@ -52,11 +62,12 @@ async def test_delayed_hello():
     """Test the delayed_hello function in isolation."""
     captured_output = StringIO()
     start_time = trio.current_time()
-    
-    with redirect_stdout(captured_output):
-        await delayed_hello()
-    
-    end_time = trio.current_time()
+    with trio.move_on_after(3):
+        
+        with redirect_stdout(captured_output):
+            await solution_module.delayed_hello()
+        
+        end_time = trio.current_time()
     elapsed_time = end_time - start_time
     
     # Check the output
@@ -70,10 +81,11 @@ async def test_delayed_hello():
 @pytest.mark.trio
 async def test_task1_timing():
     """Test that task1 completes in the expected time."""
-    start_time = trio.current_time()
-    await task1()
-    end_time = trio.current_time()
-    
+    with trio.move_on_after(3):
+        start_time = trio.current_time()
+        await solution_module.task1()
+        end_time = trio.current_time()
+        
     elapsed_time = end_time - start_time
     # We expect task1 to take about 2.5 seconds (the TIMEOUT value)
     assert 2.4 <= elapsed_time <= 2.6, f"Expected task1 to take ~2.5 seconds, got {elapsed_time:.2f} seconds"
@@ -84,7 +96,8 @@ async def test_task1_timing():
 @pytest.mark.trio
 async def test_get_user_id_success():
     """Test get_user_id with even user_id (success case)"""
-    result = await get_user_id(2)
+
+    result = await solution_module.get_user_id(2)
     assert result == {"id": 2, "username": "User 2"}
 
 @pytest.mark.task2
@@ -92,31 +105,38 @@ async def test_get_user_id_success():
 async def test_get_user_id_failure():
     """Test get_user_id with odd user_id (failure case)"""
     with pytest.raises(ValueError, match="User 1 not found"):
-        await get_user_id(1)
+        await solution_module.get_user_id(1)
 
 @pytest.mark.task2
 @pytest.mark.trio
 async def test_get_user_data_all_valid():
     """Test get_user_data with all valid (even) user IDs"""
-    user_ids = [2, 4, 6, 8, 10]
-    results = await get_user_data(user_ids)
+    with trio.move_on_after(3) as cancel_scope:
+        user_ids = [2, 4, 6, 8, 10]
+        results = await solution_module.get_user_data(user_ids)
+        
+        # Check all results are successful
+        for user_id in user_ids:
+            assert results[user_id]["status"] == "success"
+            assert results[user_id]["data"] == {"id": user_id, "username": f"User {user_id}"}
     
-    # Check all results are successful
-    for user_id in user_ids:
-        assert results[user_id]["status"] == "success"
-        assert results[user_id]["data"] == {"id": user_id, "username": f"User {user_id}"}
+    if cancel_scope.cancelled_caught: 
+        pytest.fail("Test timed out")
 
 @pytest.mark.task2
 @pytest.mark.trio
 async def test_get_user_data_all_invalid():
     """Test get_user_data with all invalid (odd) user IDs"""
-    user_ids = [1, 3, 5, 7, 9]
-    results = await get_user_data(user_ids)
-    
-    # Check all results are errors
-    for user_id in user_ids:
-        assert results[user_id]["status"] == "error"
-        assert f"User {user_id} not found" in results[user_id]["error"]
+    with trio.move_on_after(3) as cancel_scope:
+        user_ids = [1, 3, 5, 7, 9]
+        results = await solution_module.get_user_data(user_ids)
+        
+        # Check all results are errors
+        for user_id in user_ids:
+            assert results[user_id]["status"] == "error"
+            assert f"User {user_id} not found" in results[user_id]["error"]
+    if cancel_scope.cancelled_caught: 
+        pytest.fail("Test timed out")
 
 # Test task2 function (optional, as it's mainly for demonstration)
 @pytest.mark.task2
@@ -124,8 +144,9 @@ async def test_get_user_data_all_invalid():
 async def test_task2_timing():
     """Test that task2 can be executed without errors"""
     # This is a basic test to ensure task2 runs without raising exception
-    start_time = trio.current_time()
-    await task2()
+    with trio.move_on_after(3):
+        start_time = trio.current_time()
+        await solution_module.task2()
     end_time = trio.current_time()
     
     elapsed_time = end_time - start_time
@@ -146,33 +167,36 @@ async def test_task3_execution():
     """
     # Define the download directory
     download_dir = "downloads"
+    with trio.move_on_after(4) as cancel_scope:
+        try:
+            # Run task3
+            await solution_module.task3()
+            
+            # Check that files were downloaded
+            assert os.path.exists(download_dir), "Download directory was not created"
+            
+            # Check that files exist
+            downloaded_files = os.listdir(download_dir)
+            assert len(downloaded_files) == 3, "Unexpected number of downloaded files"
+            
+            # Verify file extensions
+            assert all(file.endswith('.txt') for file in downloaded_files), "Not all files are .txt"
+            
+            # Verify file names match expected books
+            expected_books = [
+                "War and Peace.txt",
+                "Pride and Prejudice.txt",
+                "The Adventures of Sherlock Holmes.txt"
+            ]
+            assert set(downloaded_files) == set(expected_books), "Unexpected files downloaded"
+        
+        finally:
+            # Clean up: remove the download directory after the test
+            if os.path.exists(download_dir):
+                shutil.rmtree(download_dir)
     
-    try:
-        # Run task3
-        await task3()
-        
-        # Check that files were downloaded
-        assert os.path.exists(download_dir), "Download directory was not created"
-        
-        # Check that files exist
-        downloaded_files = os.listdir(download_dir)
-        assert len(downloaded_files) == 3, "Unexpected number of downloaded files"
-        
-        # Verify file extensions
-        assert all(file.endswith('.txt') for file in downloaded_files), "Not all files are .txt"
-        
-        # Verify file names match expected books
-        expected_books = [
-            "War and Peace.txt",
-            "Pride and Prejudice.txt",
-            "The Adventures of Sherlock Holmes.txt"
-        ]
-        assert set(downloaded_files) == set(expected_books), "Unexpected files downloaded"
-    
-    finally:
-        # Clean up: remove the download directory after the test
-        if os.path.exists(download_dir):
-            shutil.rmtree(download_dir)
+    if cancel_scope.cancelled_caught: 
+        pytest.fail("Test timed out")
 
 # Test task3 function
 @pytest.mark.task3
@@ -180,8 +204,9 @@ async def test_task3_execution():
 async def test_task3_timing():
     """Test that task3 can be executed under 3 seconds"""
     # This is a basic test to ensure task2 runs without raising exception
-    start_time = trio.current_time()
-    await task3()
+    with trio.move_on_after(3):
+        start_time = trio.current_time()
+        await solution_module.task3()
     end_time = trio.current_time()
     
     elapsed_time = end_time - start_time
@@ -234,8 +259,9 @@ async def test_get_json_from_url_with_semaphore():
     mock_response.json.return_value = mock_response_data
     mock_client.get.return_value = mock_response  # get() is async, but json() is not
     
-    # Call the function
-    await get_json_from_url_with_semaphore(semaphore, send_channel, url, mock_client)
+    with trio.move_on_after(3) as cancel_scope:
+        # Call the function
+        await solution_module.get_json_from_url_with_semaphore(semaphore, send_channel, url, mock_client)
     
     # Assert client.get was called with the correct URL
     mock_client.get.assert_called_once_with(url)
@@ -247,6 +273,9 @@ async def test_get_json_from_url_with_semaphore():
     
     # Verify semaphore was used correctly
     assert semaphore._value == 1  # Semaphore should be released after use
+    
+    if cancel_scope.cancelled_caught: 
+        pytest.fail("Test timed out")
 
 @pytest.mark.task4
 @pytest.mark.trio
@@ -317,10 +346,11 @@ async def test_task4_integration():
             return mock_response
             
         mock_client.get.side_effect = mock_get
-        
+        with trio.move_on_after(5) as cancel_scope:
         # Call task4
-        result = await task4()
-        
+            result = await solution_module.task4()
+        if cancel_scope.cancelled_caught: 
+            pytest.fail("Test timed out")
         # Assertions
         # - Verify the number of HTTP requests made (1 for each country)
         assert mock_client.get.call_count == 3
@@ -331,7 +361,8 @@ async def test_task4_timing():
     """Test that task4 can be executed under 4 seconds"""
     # This is a basic test to ensure task4 runs under 4 seconds
     start_time = trio.current_time()
-    await task4()
+    with trio.move_on_after(4):
+        await solution_module.task4()
     end_time = trio.current_time()
     
     elapsed_time = end_time - start_time
@@ -344,8 +375,9 @@ async def test_task4_timing():
 async def test_task5_timing():
     """Test that task5 can be executed under 4 seconds"""
     # This is a basic test to ensure task4 runs under 4 seconds
-    start_time = trio.current_time()
-    await task5()
+    with trio.move_on_after(3):
+        start_time = trio.current_time()
+        await solution_module.task5()
     end_time = trio.current_time()
     
     elapsed_time = end_time - start_time
@@ -380,64 +412,29 @@ async def test_consume_data():
     
     # List to collect results
     all_dfs = []
+    with trio.move_on_after(3) as cancel_scope:
+        # Create nursery to run both sender and consumer
+        async with trio.open_nursery() as nursery:
+            # Start consumer
+            nursery.start_soon(solution_module.consume_data, receive_channel, all_dfs)
+            
+            # Send data
+            for df in dfs:
+                await send_channel.send(df)
+                # Small delay to ensure processing
+                await trio.sleep(0.01)
+            
+            # Close channel to signal end of data
+            send_channel.close()
     
-    # Create nursery to run both sender and consumer
-    async with trio.open_nursery() as nursery:
-        # Start consumer
-        nursery.start_soon(consume_data, receive_channel, all_dfs)
-        
-        # Send data
-        for df in dfs:
-            await send_channel.send(df)
-            # Small delay to ensure processing
-            await trio.sleep(0.01)
-        
-        # Close channel to signal end of data
-        send_channel.close()
-    
+    if cancel_scope.cancelled_caught: 
+        pytest.fail("Test timed out")
     # Verify all dataframes were collected
     assert len(all_dfs) == len(dfs)
     
     # Verify content matches
     for i, df in enumerate(dfs):
         assert df.to_string() == all_dfs[i].to_string()
-
-@pytest.mark.task5
-@pytest.mark.trio
-async def test_producer_consumer_pattern():
-    """Test the producer-consumer pattern with simulated producer and consumer."""
-    # Create a channel with limited buffer
-    send_channel, receive_channel = trio.open_memory_channel(2)
-    
-    # Create tracking for when items are processed
-    processed_items = []
-    
-    # Create a slow consumer to test backpressure
-    async def slow_consumer():
-        async for _ in receive_channel:
-            await trio.sleep(0.05)  # Slow consumer
-            processed_items.append(trio.current_time())
-    
-    # Create a fast producer
-    async def fast_producer():
-        for i in range(5):
-            await send_channel.send(f"item-{i}")
-            processed_items.append(f"sent-{i}-at-{trio.current_time()}")
-            # Producer is faster than consumer
-            await trio.sleep(0.01)
-        send_channel.close()
-    
-    # Run both concurrently
-    async with trio.open_nursery() as nursery:
-        nursery.start_soon(slow_consumer)
-        nursery.start_soon(fast_producer)
-    
-    # Verify backpressure worked - producer should have waited for consumer
-    assert len(processed_items) == 10  # 5 sent + 5 processed
-    
-    # The pattern of processed_items should show send, then process repeating
-    # This test is mainly to validate the producer-consumer pattern works
-
 
 if __name__ == "__main__":
     pytest.main(["-v", __file__])
