@@ -5,27 +5,34 @@ import time
 import pathlib
 
 # Available Claude models
-CLAUDE_MODELS = [
-    "claude-3-7-sonnet-20250219",     # The most recent Claude model
-    "claude-3-5-haiku-20241022",     # Claude 3.5 Haiku
-    "claude-3-5-sonnet-20240620",         # Claude 3 Opus
-    "claude-3-opus-20240229",       # Claude 3.5 Haiku
-    "claude-3-sonnet-20240229", 
-    "claude-3-haiku-20240307"
-]
+MODELS = {
+    "claude-3-7-sonnet-20250219": "anthropic",
+    "claude-3-5-haiku-20241022": "anthropic",
+    "claude-3-5-sonnet-20240620": "anthropic",
+    "claude-3-opus-20240229": "anthropic",
+    "claude-3-sonnet-20240229": "anthropic",
+    "claude-3-haiku-20240307": "anthropic",
+    "gpt-4.1-mini": "openai",
+    "gpt-4o-mini-2024-07-18": "openai",
+    "gpt-4o-2024-08-06": "openai",
+    "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free": "together",
+    "mistralai/Mistral-Small-24B-Instruct-2501": "together", 
+    "deepseek-ai/DeepSeek-V3":"together"
+}
 
 def run_claude_solver(task_file, model, api_key=None):
     """Run the Claude API solver for a specific model."""
-    
+
+    provider = MODELS.get(model)
     name = pathlib.Path(task_file).stem
     output_path = f"auto-eval/solutions/{name}"
     os.makedirs(output_path, exist_ok=True) 
 
-    output_file = f"{output_path}/solution_{model}.py"
+    output_file = f"{output_path}/solution_{model.split("/")[-1]}.py"
     if os.path.exists(output_file):
         print("Results already generated")
     else: 
-        cmd = ["python", "auto-eval/claude_api_solver.py", task_file, "--model", model, "--output", output_file]
+        cmd = ["python", "auto-eval/multi_api_solver.py", task_file, "--model", model, "--provider", provider, "--output", output_file]
         
         if api_key:
             cmd.extend(["--api-key", api_key])
@@ -38,7 +45,7 @@ def run_claude_solver(task_file, model, api_key=None):
 def main():
     parser = argparse.ArgumentParser(description="Solve tasks with multiple Claude models")
     parser.add_argument("task_file", help="Path to the Python file containing tasks")
-    parser.add_argument("--models", nargs="+", choices=CLAUDE_MODELS, 
+    parser.add_argument("--models", nargs="+", choices=list(MODELS.keys()) + ["all"], 
                         default=["claude-3-7-sonnet-20250219"],
                         help="Claude models to use (default: claude-3-7-sonnet-20250219)")
     parser.add_argument("--api-key", help="Anthropic API key (default: from ANTHROPIC_API_KEY env var)")
@@ -51,7 +58,7 @@ def main():
     args = parser.parse_args()
     
     if args.models == ["all"]:
-        models = CLAUDE_MODELS
+        models = list(MODELS.keys())
     else:
         models = args.models
     
@@ -70,7 +77,7 @@ def main():
     if args.run_tests:
         print("\n=== Running tests on solutions ===")
         for model, solution_file in solutions:
-            with open(f"{results_path}/results-{model}.txt", 'w') as f: 
+            with open(f"{results_path}/results-{model.split("/")[-1]}.txt", 'w') as f: 
                 test_cmd = ["pytest", args.test_file, f"--solution-file={solution_file}", "-v"]
                 result = subprocess.run(test_cmd, stdout=f, stderr=subprocess.STDOUT)
                 

@@ -326,68 +326,410 @@ async def task5():
             print(country_mapping[id], f"GDP Growth: {(GDP2-GDP1)/GDP1*100}%")
 
 
-class PriorityScheduler: 
-    def add_task(self, coroutine, priority):
-        pass 
+class BasicPriorityScheduler:
+    """
+    A basic priority-based task scheduler using Python's Trio library.
+    
+    This scheduler can add tasks with different priority levels (1-5, where 1 is highest priority),
+    execute tasks in order of priority, and track basic task information and execution status.
+    """
+    def __init__(self): 
+        """
+        Initialize the BasicPriorityScheduler with necessary data structures.
+        
+        Sets up:
+        - Task counter for generating unique IDs
+        - Priority queues for tasks (levels 1-5)
+        - Task status tracking
+        - Logging mechanism with timestamps
+        """  
+        self.task_counter = 1
+        self.current_priority = 1 
+        self.priority_queue = {}
+        self.id2priority = {} 
+        self.task_statuses  = {}
+        self.nursery = None 
+        self.log = [] 
+        self.start_time = time.time() 
+        for i in range(1, 6): 
+            self.priority_queue[i] = {} 
 
-    def cancel_task(self, taskid): 
-        pass
+    def get_current_time(self) -> float: 
+        """
+        Get the elapsed time since the scheduler was initialized.
+        """
+        elapsed_time = time.time() - self.start_time 
+        return elapsed_time
 
-    def reschedule(self, task_id, new_priority):
-        pass 
+    def get_tasks_by_status(self, status):
+        """Return a list of task IDs that have the specified status."""
+        return [task_id for task_id, task_status in self.task_statuses.items() 
+                if task_status == status]
+    
+    def log_event(self, action:str, id:int) -> None: 
+        """
+        Log an event with the current timestamp.
+        
+        Args:
+            action (str): Description of the action (e.g., 'added', 'started', 'completed')
+            id (int): Task ID or priority level associated with the action
+        """
+        current_time = self.get_current_time()
+        self.log.append({
+            'time': current_time,
+            'action': action, 
+            'task_id': id
+        })
+        
+    async def add_task(self, coroutine, priority, *args) -> int:
+        """
+        Add a coroutine to the scheduler with the specified priority.
+        
+        Creates a wrapper around the provided coroutine to track its status
+        during execution. If the scheduler is already running tasks at the
+        current priority level or higher, the task will start immediately.
+        
+        Args:
+            coroutine (Callable): The coroutine function to schedule
+            priority (int): Priority level (1-5, where 1 is highest)
+            *args: Arguments to pass to the coroutine when executed
+            
+        Returns:
+            int: Unique task ID that can be used to reference this task
+        """
+        task_id = self.task_counter
 
-    def run(self): 
-        pass 
+        # Create a wrapper coroutine that updates status
+        async def task_with_status_tracking(*wrapped_args):
+            result = None 
+            self.task_statuses[task_id] = 'running'
+            self.log_event(action='started', id=task_id)
+
+            result = await coroutine(*wrapped_args)
+            self.task_statuses[task_id] = 'completed'
+            self.log_event(action='completed', id=task_id)
+            return result
+
+        self.priority_queue[priority][task_id] = (task_with_status_tracking, args) 
+        self.task_counter += 1 
+        self.id2priority[task_id] = priority
+        self.task_statuses[task_id] = 'pending'
+        self.log_event(action='added', id=task_id)
+
+        # when it is already running - start task immediately 
+        if priority <= self.current_priority and self.nursery is not None: 
+                coro, args = self.priority_queue[priority][task_id]
+                self.nursery.start_soon(coro, args)
+        
+        return task_id
+        
+    async def run(self):
+        """
+        Execute all tasks according to priority levels.
+        
+        Processes tasks in order of priority (1-5), starting with the highest
+        priority (1) and only moving to the next priority level when all tasks
+        in the current level have completed.
+        
+        Each priority level is executed within its own nursery, allowing for
+        concurrent execution of tasks with the same priority.
+        """
+        for i in range(1, 6): 
+            self.current_priority = i 
+            self.log_event(action="Starting Priority Level", id=i)
+            async with trio.open_nursery() as nursery: 
+                self.nursery = nursery
+                for task in self.priority_queue[i]: 
+                    coro, args = self.priority_queue[i][task]
+                    nursery.start_soon(coro, args)
+            self.log_event(action="Finished Priority Level", id=i)
+        
+    def print_statistics(self): 
+        """
+        Print execution statistics from the task log.
+        
+        Displays chronological events with timestamps, including:
+        - Task additions, starts, and completions
+        - Priority level transitions
+        - Any shutdown events
+        """
+        for row in self.log: 
+            if row['action'].endswith("Level"): 
+                print(f"Time: {row['time']:.1f}s - {row['action']} {row['task_id']}")
+            elif row['action'].endswith("Shutdown"): 
+                print(f"Time: {row['time']:.1f}s - {row['action']}")
+            else: 
+                print(f"Time: {row['time']:.1f}s - Action: Task {row['task_id']} {row['action']}")
+
 
 async def task6(): 
     """
-    Create a PriorityScheduler class with the following methods:
+    In this first part, you will build the foundation of a priority-based task scheduler using Python's Trio library. Your scheduler should be able to:
 
-    add_task(coro, priority): Add a coroutine with a specified priority (1-5, where 1 is highest)
-    cancel_task(task_id): Cancel a scheduled task by ID
-    reschedule(task_id, new_priority): Change the priority of a task
-    run(): Main execution method that processes tasks according to priority
+    Add tasks with different priority levels (1-5, where 1 is highest priority)
+    Execute tasks in order of priority
+    Track basic task information and execution status
 
-    Implement these features:
+    1. Create a PriorityScheduler class with the following methods:
+    - __init__(): Initialize necessary data structures
+    - add_task(coroutine, priority, *args): Add a coroutine with specified priority
+    - run(): Execute all tasks according to priority levels
 
-    Tasks with higher priority should generally execute before lower priority tasks
-    The scheduler should allow adding new tasks while other tasks are running
-    Each task should be assigned a unique ID for tracking
-    Include proper cancellation handling with appropriate cleanup
-    Implement statistics tracking that records:
+    2. Implement task tracking:
+    - assign a unique ID to each task
+    - Track task status (pending, running, completed)
+    - Log basic events (task added, started, completed)
 
-    Average wait time per priority level
-    Number of completed vs canceled tasks
-    Execution time for each task
-
-    Graceful shutdown mechanism:
-    Handle CTRL+C with proper cleanup of resources
-    Allow urgent tasks to complete before shutdown if possible
-
-    The expected output would show tasks executing according to priority, with dynamic additions, 
-    cancellations, and rescheduling affecting the execution order. 
-    The statistics output should show metrics about wait times, completion rates, and execution times.
+    EXPECTED OUTPUT: 
+    Running Task 6
+    Time: 0.0s-Action: Task 1 added
+    Time: 0.0s-Action: Task 2 added
+    Time: 0.0s-Action: Task 3 added
+    Time: 0.0s-Starting Priority Level 1
+    Time: 0.0s-Action: Task 1 started
+    Time: 2.0s-Action: Task 1 completed
+    Time: 2.0s-Finished Priority Level 1
+    Time: 2.0s-Starting Priority Level 2
+    Time: 2.0s-Finished Priority Level 2
+    Time: 2.0s-Starting Priority Level 3
+    Time: 2.0s-Action: Task 2 started
+    Time: 7.0s-Action: Task 2 completed
+    Time: 7.0s-Finished Priority Level 3
+    Time: 7.0s-Starting Priority Level 4
+    Time: 7.0s-Finished Priority Level 4
+    Time: 7.0s-Starting Priority Level 5
+    Time: 7.0s-Action: Task 3 started
+    Time: 12.0s-Action: Task 3 completed
+    Time: 12.0s-Finished Priority Level 5
 
     """
-    scheduler = PriorityScheduler()
+    scheduler = BasicPriorityScheduler()
     
     # Define some test tasks
     async def high_priority_task(name):
-        print(f"Starting high priority task {name}")
         await trio.sleep(2)
-        print(f"Completed high priority task {name}")
         return f"Result from {name}"
     
     async def low_priority_task(name):
-        print(f"Starting low priority task {name}")
         await trio.sleep(5)
-        print(f"Completed low priority task {name}")
+        return f"Result from {name}"
+
+    # Add initial tasks
+    task1_id = await scheduler.add_task(high_priority_task, 1, "Task1")
+    task2_id = await scheduler.add_task(low_priority_task, 3, "Task2")
+    task3_id = await scheduler.add_task(low_priority_task, 5, "Task3")
+    
+    # Start the scheduler
+    async with trio.open_nursery() as nursery:
+        nursery.start_soon(scheduler.run)
+    
+    # Print statistics
+    scheduler.print_statistics()
+
+class AdvancedPriorityScheduler: 
+    def __init__(self): 
+        self.task_counter = 1
+        self.current_priority = 1 
+        self.priority_queue = {}
+        self.id2priority = {} 
+        self.running_tasks = {} 
+        self.task_statuses = {} 
+        self.nursery = None 
+        self.log = [] 
+        self.start_time = time.time() 
+        for i in range(1, 6): 
+            self.priority_queue[i] = {} 
+
+    def get_current_time(self): 
+        elapsed_time = time.time() - self.start_time 
+        return elapsed_time
+
+    def log_event(self, action, id): 
+        current_time = self.get_current_time()
+        self.log.append({
+            'time': current_time,
+            'action': action, 
+            'task_id': id
+        })
+
+    def get_tasks_by_status(self, status):
+        """Return a list of task IDs that have the specified status."""
+        return [task_id for task_id, task_status in self.task_statuses.items() 
+                if task_status == status]
+    
+    async def add_task(self, coroutine, priority, *args) -> int:
+        task_id = self.task_counter
+
+        # Create a wrapper coroutine that updates status
+        async def task_with_status_tracking(*wrapped_args):
+            result = None
+            with trio.CancelScope() as cancel_scope: 
+                self.running_tasks[task_id] = cancel_scope
+                self.task_statuses[task_id] = 'running'
+                self.log_event(action='started', id=task_id)
+
+                try: 
+                    result = await coroutine(*wrapped_args)
+                    self.task_statuses[task_id] = 'completed'
+                    self.log_event(action='completed', id=task_id)
+                finally: 
+                    if task_id in self.running_tasks: 
+                        del self.running_tasks[task_id]
+
+            return result
+
+
+        self.priority_queue[priority][task_id] = (task_with_status_tracking, args) 
+        self.task_counter += 1 
+        self.id2priority[task_id] = priority
+        self.task_statuses[task_id] = 'pending'
+        self.log_event(action='added', id=task_id)
+
+        # when it is already running - start task immediately 
+        if priority <= self.current_priority and self.nursery is not None: 
+                coro, args = self.priority_queue[priority][task_id]
+                self.nursery.start_soon(coro, args)
+        
+        return task_id
+
+    async def cancel_task(self, task_id): 
+        priority = self.id2priority[task_id]
+
+        # cancel scope of async task if it is currently running
+        if task_id in self.running_tasks: 
+            self.running_tasks[task_id].cancel() 
+            self.log_event(action='stopped', id=task_id)
+        else: 
+            self.log_event(action='removed', id=task_id)
+        
+        # remove task from priority queue
+        if task_id in self.priority_queue[priority]: 
+            del self.priority_queue[priority][task_id]
+        
+        self.task_statuses[task_id] = 'cancelled'
+
+    async def reschedule(self, task_id, new_priority):
+        priority = self.id2priority[task_id]
+
+        # add to new priority 
+        self.priority_queue[new_priority][task_id] = self.priority_queue[priority][task_id]
+        
+        # remove task from priority queue
+        del self.priority_queue[priority][task_id]
+        self.log_event(action='rescheduled', id=task_id)
+
+        self.id2priority[task_id] = new_priority
+
+        # when if task is high priority enough to be running 
+        if new_priority <= self.current_priority: 
+                coro, args = self.priority_queue[new_priority][task_id]
+                self.nursery.start_soon(coro, args)
+
+    async def run(self): 
+        for i in range(1, 6): 
+            self.current_priority = i 
+            self.log_event(action="Starting Priority Level", id=i)
+            async with trio.open_nursery() as nursery: 
+                self.nursery = nursery
+                for task in self.priority_queue[i]: 
+                    coro, args = self.priority_queue[i][task]
+                    nursery.start_soon(coro, args)
+            self.log_event(action="Finished Priority Level", id=i)
+            
+
+    async def shutdown(self): 
+        self.log_event(action="Starting Shutdown", id=None)
+        # Cancel all running tasks
+        for task_id in self.running_tasks:
+            # Cancel the task's scope
+            await self.cancel_task(task_id)
+        
+        # Wait a moment for cancellations to propagate
+        await trio.sleep(0.1)
+        
+        # Clear the running tasks dictionary
+        self.running_tasks.clear()
+
+        # Handle any pending tasks that haven't started yet
+        for priority in self.priority_queue:
+            for task_id in self.priority_queue[priority]:
+                if self.task_statuses[task_id] == 'pending':
+                    self.log_event(action='cancelled_pending', id=task_id)
+
+        self.log_event(action="Finished Shutdown", id=None)
+        
+
+    def print_statistics(self): 
+        for row in self.log: 
+            if row['action'].endswith("Level"): 
+                print(f"Time: {row['time']:.1f}s - {row['action']} {row['task_id']}")
+            elif row['action'].endswith("Shutdown"): 
+                print(f"Time: {row['time']:.1f}s - {row['action']}")
+            else: 
+                print(f"Time: {row['time']:.1f}s - Action: Task {row['task_id']} {row['action']}")
+
+async def task7(): 
+    """
+    Building on your implementation from Part 1, enhance your priority scheduler with dynamic task management and more sophisticated tracking.
+    AdvancedPriorityScheduler should have all the features fo the basic scheduler and the following requirments. 
+
+    1. Add these new methods to your PriorityScheduler class:
+    - cancel_task(task_id): Cancel a scheduled or running task
+    - reschedule(task_id, new_priority): Change a task's priority
+    - shutdown(): Gracefully stop all tasks and clean up
+
+    2. Dynamic Task Management: 
+    - Allow adding tasks while the scheduler is running
+    - Handle priority changes correctly
+    - Manage task cancellation with proper cleanup
+
+    Hints: use CancelScope to be able to cancel running tasks, 
+
+    EXPECTED OUTPUT: 
+    Running Task 7
+    Time: 0.000s - Action: Task 1 added
+    Time: 0.000s - Action: Task 2 added
+    Time: 0.000s - Action: Task 3 added
+    Time: 0.000s - Starting Priority Level 1
+    Time: 0.000s - Action: Task 1 started
+    Time: 1.001s - Action: Task 4 added
+    Time: 1.503s - Action: Task 3 removed
+    Time: 2.001s - Action: Task 1 completed
+    Time: 2.002s - Finished Priority Level 1
+    Time: 2.002s - Starting Priority Level 2
+    Time: 2.002s - Action: Task 4 started
+    Time: 2.003s - Action: Task 2 rescheduled
+    Time: 2.003s - Action: Task 5 added
+    Time: 2.003s - Action: Task 2 started
+    Time: 4.003s - Action: Task 4 completed
+    Time: 7.004s - Action: Task 2 completed
+    Time: 7.004s - Finished Priority Level 2
+    Time: 7.004s - Starting Priority Level 3
+    Time: 7.004s - Finished Priority Level 3
+    Time: 7.004s - Starting Priority Level 4
+    Time: 7.004s - Finished Priority Level 4
+    Time: 7.004s - Starting Priority Level 5
+    Time: 7.004s - Action: Task 5 started
+    Time: 11.005s - Starting Shutdown
+    Time: 11.005s - Action: Task 5 stopped
+    Time: 11.005s - Finished Priority Level 5
+    Time: 11.106s - Finished Shutdown
+    """
+    scheduler = AdvancedPriorityScheduler()
+    
+    # Define some test tasks
+    async def high_priority_task(name):
+        await trio.sleep(2)
         return f"Result from {name}"
     
+    async def low_priority_task(name):
+        await trio.sleep(5)
+        return f"Result from {name}"
+
     # Add initial tasks
-    task1_id = await scheduler.add_task(high_priority_task("Task1"), priority=1)
-    task2_id = await scheduler.add_task(low_priority_task("Task2"), priority=3)
-    task3_id = await scheduler.add_task(low_priority_task("Task3"), priority=5)
+    task1_id = await scheduler.add_task(high_priority_task, 1, "Task1")
+    task2_id = await scheduler.add_task(low_priority_task, 3, "Task2")
+    task3_id = await scheduler.add_task(low_priority_task, 5, "Task3")
     
     # Start the scheduler
     async with trio.open_nursery() as nursery:
@@ -395,7 +737,7 @@ async def task6():
         
         # Add more tasks while scheduler is running
         await trio.sleep(1)
-        task4_id = await scheduler.add_task(high_priority_task("Task4"), priority=2)
+        task4_id = await scheduler.add_task(high_priority_task, 2, "Task4")
         
         # Cancel a task
         await trio.sleep(0.5)
@@ -406,29 +748,33 @@ async def task6():
         await scheduler.reschedule(task2_id, new_priority=1)
         
         # After 10 seconds, request scheduler shutdown
-        await trio.sleep(10)
+        task6_id = await scheduler.add_task(low_priority_task, 5, "Task5")
+        await trio.sleep(9)
         await scheduler.shutdown()
     
     # Print statistics
     scheduler.print_statistics()
 
-async def task7(): 
-    """
-    """
 
 if __name__ == "__main__":
     # Here we will test the code you have written for each task
-    print("Running Task 1: Delayed Hello")
-    trio.run(task1)
+    # print("Running Task 1: Delayed Hello")
+    # trio.run(task1)
 
-    print("Running Task 2: Error Handling")
-    trio.run(task2)
+    # print("Running Task 2: Error Handling")
+    # trio.run(task2)
 
-    print("Running Task 3: Download Files")
-    trio.run(task3)
+    # print("Running Task 3: Download Files")
+    # trio.run(task3)
 
-    print("Running Task 4: Max Threads")
-    trio.run(task4)
+    # print("Running Task 4: Max Threads")
+    # trio.run(task4)
 
-    print("Running Task 5")
-    trio.run(task5)
+    # print("Running Task 5")
+    # trio.run(task5)
+
+    # print("Running Task 6")
+    # trio.run(task6)
+
+    print("Running Task 7")
+    trio.run(task7)

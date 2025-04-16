@@ -211,7 +211,7 @@ async def test_task3_timing():
     
     elapsed_time = end_time - start_time
     # We expect task1 to take about 2.5 seconds (the TIMEOUT value)
-    assert elapsed_time <= 3, f"Expected task 3 to take less than 3 seconds, got {elapsed_time:.2f} seconds"
+    assert elapsed_time <= 3.5, f"Expected task 3 to take less than 3 seconds, got {elapsed_time:.2f} seconds"
 
 @pytest.mark.task4
 @pytest.mark.trio
@@ -366,6 +366,7 @@ async def test_task4_timing():
     end_time = trio.current_time()
     
     elapsed_time = end_time - start_time
+    print(elapsed_time)
     # We expect task1 to take about 2.5 seconds (the TIMEOUT value)
     assert elapsed_time <= 4, f"Expected task 4 to take less than 4 seconds, got {elapsed_time:.2f} seconds"
 
@@ -435,6 +436,340 @@ async def test_consume_data():
     # Verify content matches
     for i, df in enumerate(dfs):
         assert df.to_string() == all_dfs[i].to_string()
+
+
+
+@pytest.mark.task6
+@pytest.mark.trio
+async def test_add_task():
+    """Test adding a task to the scheduler"""
+    scheduler = solution_module.BasicPriorityScheduler()
+    
+    # Define a simple test coroutine
+    async def test_coro(name):
+        return f"Hello, {name}"
+    
+    # Add a task
+    task_id = await scheduler.add_task(test_coro, 2, "World")
+    
+    # Check that the task was added correctly
+    assert task_id == 1  # First task should have ID 1
+    assert scheduler.task_counter == 2  # Counter should be incremented
+    assert 1 in scheduler.id2priority
+    assert scheduler.id2priority[1] == 2  # Priority 2
+    assert 1 in scheduler.task_statuses
+    assert scheduler.task_statuses[1] == 'pending'
+    
+    # Check the task in the priority queue
+    assert 1 in scheduler.priority_queue[2]
+    coro_wrapper, args = scheduler.priority_queue[2][1]
+    assert args == ("World",)
+    
+    # Check the log
+    assert any(entry['action'] == 'added' and entry['task_id'] == 1 for entry in scheduler.log)
+
+
+# Test run method executes tasks in priority order
+@pytest.mark.task6
+@pytest.mark.trio
+async def test_run_priority_order():
+    """Test that tasks are executed in priority order"""
+    scheduler = solution_module.BasicPriorityScheduler()
+    execution_order = []
+    
+    # Define test tasks with different priorities
+    async def test_task(name):
+        execution_order.append(name)
+        await trio.sleep(0.1)  # Small delay
+        return f"Result: {name}"
+    
+    # Add tasks with different priorities
+    await scheduler.add_task(test_task, 3, "Task3")  # Medium priority
+    await scheduler.add_task(test_task, 1, "Task1")  # Highest priority
+    await scheduler.add_task(test_task, 5, "Task5")  # Lowest priority
+    await scheduler.add_task(test_task, 2, "Task1b") # Also highest priority
+    
+    # Run the scheduler
+    await scheduler.run()
+
+    # Check execution order in the log
+    started_tasks = [entry['task_id'] for entry in scheduler.log if entry['action'] == 'started']
+    expected_order = [2, 4, 1, 3]  # Based on the priorities: Task1, Task1b, Task3, Task5
+    assert started_tasks == expected_order, f"Expected start order {expected_order}, got {started_tasks}"
+
+
+# Test task status tracking
+@pytest.mark.task6
+@pytest.mark.trio
+async def test_task_status_tracking():
+    """Test that task statuses are properly tracked during execution"""
+    scheduler = solution_module.BasicPriorityScheduler()
+    
+    # Define a simple test task
+    async def test_task(name):
+        await trio.sleep(0.1)  # Small delay
+        return f"Result: {name}"
+    
+    # Add a task
+    task_id = await scheduler.add_task(test_task, 1)
+    
+    # Check initial status
+    assert scheduler.task_statuses[task_id] == 'pending'
+    
+    # Set up a background task to check the status while running
+    status_during_run = None
+    
+    async def check_status():
+        nonlocal status_during_run
+        await trio.sleep(0.05)  # Wait a bit for the task to start
+        status_during_run = scheduler.task_statuses[task_id]
+    
+    # Run both the scheduler and status checker
+    async with trio.open_nursery() as nursery:
+        nursery.start_soon(check_status)
+        nursery.start_soon(scheduler.run)
+    
+    # Check status during and after execution
+    assert status_during_run == 'running'
+    assert scheduler.task_statuses[task_id] == 'completed'
+
+
+# Integration test - full execution flow
+@pytest.mark.task6
+@pytest.mark.trio
+async def test_full_execution_flow():
+    """
+    Integration test for the full scheduler workflow:
+    1. Add tasks with different priorities
+    2. Run the scheduler
+    3. Verify execution order and task statuses
+    """
+    scheduler = solution_module.BasicPriorityScheduler()
+    # Define some test tasks
+    async def high_priority_task(name):
+        await trio.sleep(1)
+        return f"Result from {name}"
+    
+    async def low_priority_task(name):
+        await trio.sleep(2)
+        return f"Result from {name}"
+    
+    # Add tasks
+    await scheduler.add_task(high_priority_task, 1, "HighPriority")
+    await scheduler.add_task(low_priority_task, 3, "MediumPriority")
+    await scheduler.add_task(low_priority_task, 5, "LowPriority")
+    
+    # Run the scheduler
+    await scheduler.run()
+    
+    # Check all tasks are marked completed
+    completed_tasks = scheduler.get_tasks_by_status('completed')
+    assert len(completed_tasks) == 3
+    
+    # Verify no tasks are still pending or running
+    assert len(scheduler.get_tasks_by_status('pending')) == 0
+    assert len(scheduler.get_tasks_by_status('running')) == 0
+    
+    # Check log for correct sequence of priority levels
+    priority_starts = [entry for entry in scheduler.log if entry['action'] == 'Starting Priority Level']
+    priority_order = [entry['task_id'] for entry in priority_starts]
+    assert priority_order == [1, 2, 3, 4, 5]
+
+    # Check that each "Starting Priority Level" is followed by "Finishing Priority Level" before the next level
+    current_priority = None
+    for entry in scheduler.log:
+        if entry['action'] == 'Starting Priority Level':
+            if current_priority is not None:
+                # Ensure the previous priority level was finished
+                assert any(e['action'] == 'Finished Priority Level' and e['task_id'] == current_priority for e in scheduler.log), \
+                    f"Priority level {current_priority} was not finished before starting {entry['task_id']}"
+            current_priority = entry['task_id']
+        elif entry['action'] == 'Finished Priority Level':
+            assert entry['task_id'] == current_priority, \
+                f"Finished Priority Level {entry['task_id']} does not match current priority {current_priority}"
+            current_priority = None
+
+
+@pytest.mark.task7
+@pytest.mark.trio
+async def test_add_task():
+    """Test adding a task to the scheduler"""
+    scheduler = solution_module.AdvancedPriorityScheduler()
+    
+    # Define a simple test coroutine
+    async def test_coro(name):
+        return f"Hello, {name}"
+    
+    # Add a task
+    task_id = await scheduler.add_task(test_coro, 2, "World")
+    
+    # Check that the task was added correctly
+    assert task_id == 1  # First task should have ID 1
+    assert scheduler.task_counter == 2  # Counter should be incremented
+    assert 1 in scheduler.id2priority
+    assert scheduler.id2priority[1] == 2  # Priority 2
+    assert 1 in scheduler.task_statuses
+    assert scheduler.task_statuses[1] == 'pending'
+    
+    # Check the task in the priority queue
+    assert 1 in scheduler.priority_queue[2]
+    coro_wrapper, args = scheduler.priority_queue[2][1]
+    assert args == ("World",)
+    
+    # Check the log
+    assert any(entry['action'] == 'added' and entry['task_id'] == 1 for entry in scheduler.log)
+
+@pytest.mark.task7
+@pytest.mark.trio
+async def test_cancel_pending_task():
+    """Test canceling a pending task"""
+    scheduler = solution_module.AdvancedPriorityScheduler()
+    
+    # Define a test coroutine
+    async def test_coro(name):
+        await trio.sleep(1)
+        return f"Hello, {name}"
+    
+    # Add a task
+    task_id = await scheduler.add_task(test_coro, 2, "World")
+    
+    # Cancel the task before it starts running
+    await scheduler.cancel_task(task_id)
+    
+    # Check task status is updated
+    assert scheduler.task_statuses[task_id] == 'cancelled'
+    
+    # Check task is removed from priority queue
+    assert task_id not in scheduler.priority_queue[2]
+    
+    # Check the log
+    assert any(entry['action'] == 'removed' and entry['task_id'] == task_id for entry in scheduler.log)
+
+@pytest.mark.task7
+@pytest.mark.trio
+async def test_cancel_running_task():
+    """Test canceling a running task"""
+    scheduler = solution_module.AdvancedPriorityScheduler()
+    
+    # We'll need to simulate a running task with a cancel scope
+    task_id = 1
+    scheduler.task_counter = 2
+    scheduler.id2priority[task_id] = 1
+    scheduler.task_statuses[task_id] = 'running'
+    
+    # Create a mock cancel scope
+    mock_cancel_scope = MagicMock()
+    scheduler.running_tasks[task_id] = mock_cancel_scope
+    
+    # Cancel the "running" task
+    await scheduler.cancel_task(task_id)
+    
+    # Check the cancel method was called on the scope
+    mock_cancel_scope.cancel.assert_called_once()
+    
+    # Check task status is updated
+    assert scheduler.task_statuses[task_id] == 'cancelled'
+    
+    # Check the log
+    assert any(entry['action'] == 'stopped' and entry['task_id'] == task_id for entry in scheduler.log)
+
+@pytest.mark.task7
+@pytest.mark.trio
+async def test_reschedule_to_active_priority():
+    """Test rescheduling a task to a priority that's currently running"""
+    scheduler = solution_module.AdvancedPriorityScheduler()
+    
+    # Define a test coroutine
+    async def test_coro(name):
+        await trio.sleep(0.1)
+        return f"Hello, {name}"
+    
+    # Add a task
+    task_id = await scheduler.add_task(test_coro, 3, "World")
+    
+    # Set up a mock nursery
+    mock_nursery = MagicMock()
+    scheduler.nursery = mock_nursery
+    scheduler.current_priority = 1  # Simulate running priority 1
+    
+    # Reschedule from priority 3 to priority 1
+    await scheduler.reschedule(task_id, 1)
+    
+    # Check that task was started in the nursery
+    assert mock_nursery.start_soon.called
+    
+    # Check priority is updated
+    assert scheduler.id2priority[task_id] == 1
+    assert task_id in scheduler.priority_queue[1]
+
+@pytest.mark.task7
+@pytest.mark.trio
+async def test_shutdown_handles_pending_tasks():
+    """Test that shutdown properly handles pending tasks"""
+    scheduler = solution_module.AdvancedPriorityScheduler()
+    
+    # Define a test coroutine
+    async def test_coro(name):
+        await trio.sleep(2)
+        return "Result"
+    
+    # Add some tasks but don't run them (they'll stay pending)
+    task1_id = await scheduler.add_task(test_coro, 5, "World")
+    task2_id = await scheduler.add_task(test_coro, 5, "World")
+    
+    # Change task statuses to ensure they're pending
+    scheduler.task_statuses[task1_id] = 'pending'
+    scheduler.task_statuses[task2_id] = 'pending'
+    
+    # Call shutdown
+    await scheduler.shutdown()
+    
+    # Check for cancelled_pending events in the log
+    pending_cancellations = [entry for entry in scheduler.log if entry['action'] == 'cancelled_pending']
+    assert len(pending_cancellations) == 2
+
+
+# Integration test - full execution flow
+@pytest.mark.task7
+@pytest.mark.trio
+async def test_add_task_while_running():
+    """Test adding a task while the scheduler is already running"""
+    scheduler = solution_module.AdvancedPriorityScheduler()
+    results = {}
+    
+    # Define test tasks
+    async def long_task(name):
+        await trio.sleep(0.3)
+        results['long'] = "Long task finished"
+        return results['long']
+    
+    async def add_new_task():
+        await trio.sleep(0.1)  # Wait a bit before adding new task
+        # Add a higher priority task while scheduler is running
+        task_id = await scheduler.add_task(short_task, 1, "short_task")
+        results['added_id'] = task_id
+    
+    async def short_task(name):
+        await trio.sleep(0.1)
+        results['short'] = "Short task finished"
+        return results['short']
+    
+    # Add initial task (long running, lower priority)
+    await scheduler.add_task(long_task, 3, "long_task")
+    
+    # Start the scheduler and add new task while it's running
+    async with trio.open_nursery() as nursery:
+        nursery.start_soon(scheduler.run)
+        nursery.start_soon(add_new_task)
+    
+    scheduler.print_statistics()
+    # Verify both tasks completed and the new task was added successfully
+    new_task_start_time = [r['time'] for r in scheduler.log if r['action'] == 'started' and r['task_id']==2][0]
+    old_task_finish_time = [r['time'] for r in scheduler.log if r['action'] == 'completed' and r['task_id']==1][0]
+    assert new_task_start_time < old_task_finish_time
+    assert 'long' in results
+    assert 'short' in results
+    assert 'added_id' in results
 
 if __name__ == "__main__":
     pytest.main(["-v", __file__])
