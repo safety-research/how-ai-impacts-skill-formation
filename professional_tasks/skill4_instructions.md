@@ -1,5 +1,7 @@
 # Asynchronous Programming with Trio 
 
+**Setup**: To begin make sure you run: ```pip install trio``` in the terminal.  
+
 ## Task 1: Concurrent Execution
 
 ### Task 1a: Beginner Async Functions
@@ -111,7 +113,7 @@ You'll notice that files don't necessarily finish downloading in the order they 
 In this part, you will implement an asynchronous function to fetch economic data from the World Bank API while controlling concurrency.
 Your task is to implement: 
 - ```get_json_from_url_with_semaphore(semaphore:trio.Semaphore, send_channel: trio.MemorySendChannel, url: str, client: httpx.AsyncClient)```: A function that uses a semaphore to control the number of concurrent requests (i.e. API Calls), fetches JSON data from a given URL and turns it into pandas DataFrame, and sends the processed DataFrame through a memory channel
-- ```close_after_timeout(send_channel: trio.MemorySendChannel)```: A funcition that waits 5 seconds and then closes the memory channel. 
+- ```close_after_timeout(send_channel: trio.MemorySendChannel)```: A function that waits 3 seconds and then closes the memory channel. 
 - ```task3a()```: The main task function that 
     1. Sets up memory channels for data flow
     2. Creates an HTTP client for making requests
@@ -157,7 +159,7 @@ async def task3a():
             # print GDP growth of 20 countries
             GDP1 = int(group[group['date'] == '1999']['value'].iloc[0])
             GDP2 = int(group[group['date'] == '2019']['value'].iloc[0])
-            print(country_mapping[id], f"GDP Growth: {(GDP2-GDP1)/GDP1*100}%")
+            print(country_mapping[id], f"GDP Growth: {(GDP2-GDP1)/GDP1*100:.2f}%")
 
 ```
 
@@ -203,8 +205,33 @@ async def task3b():
             # print GDP growth of 20 countries
             GDP1 = int(group[group['date'] == '1999']['value'].iloc[0])
             GDP2 = int(group[group['date'] == '2019']['value'].iloc[0])
-            print(country_mapping[id], f"GDP Growth: {(GDP2-GDP1)/GDP1*100}%")
+            print(country_mapping[id], f"GDP Growth: {(GDP2-GDP1)/GDP1*100:.2f}%")
 ```
+
+**Expected Output** For both part 3a and 3b. Results may appear in different order 
+```
+Aruba GDP Growth: 97.10%
+Africa Eastern and Southern GDP Growth: 280.41%
+Afghanistan Missing data
+Africa Missing data
+Africa Western and Central GDP Growth: 492.60%
+Angola GDP Growth: 1052.26%
+Albania GDP Growth: 385.20%
+Andorra GDP Growth: 154.39%
+Arab World GDP Growth: 335.67%
+United Arab Emirates GDP Growth: 394.98%
+Argentina GDP Growth: 57.93%
+Armenia GDP Growth: 637.98%
+American Samoa Missing data
+Antigua and Barbuda GDP Growth: 106.50%
+Australia GDP Growth: 257.43%
+Austria GDP Growth: 104.69%
+Azerbaijan GDP Growth: 951.55%
+Burundi GDP Growth: 218.85%
+East Asia & Pacific (IBRD-only countries) Missing data
+Europe & Central Asia (IBRD-only countries) Missing data
+```
+
 
 ## Task 4: Trio Priority Queue
 
@@ -266,11 +293,11 @@ async def task4a():
     
     # Define some test tasks
     async def high_priority_task(name):
-        await trio.sleep(2)
+        await trio.sleep(1)
         return f"Result from {name}"
     
     async def low_priority_task(name):
-        await trio.sleep(5)
+        await trio.sleep(2)
         return f"Result from {name}"
 
     # Add initial tasks
@@ -293,20 +320,20 @@ Time: 0.0s - Action: Task 2 added
 Time: 0.0s - Action: Task 3 added
 Time: 0.0s - Starting Priority Level 1
 Time: 0.0s - Action: Task 1 started
-Time: 2.0s - Action: Task 1 completed
-Time: 2.0s - Finished Priority Level 1
-Time: 2.0s - Starting Priority Level 2
-Time: 2.0s - Finished Priority Level 2
-Time: 2.0s - Starting Priority Level 3
-Time: 2.0s - Action: Task 2 started
-Time: 7.0s - Action: Task 2 completed
-Time: 7.0s - Finished Priority Level 3
-Time: 7.0s - Starting Priority Level 4
-Time: 7.0s - Finished Priority Level 4
-Time: 7.0s - Starting Priority Level 5
-Time: 7.0s - Action: Task 3 started
-Time: 12.0s - Action: Task 3 completed
-Time: 12.0s - Finished Priority Level 5
+Time: 1.0s - Action: Task 1 completed
+Time: 1.0s - Finished Priority Level 1
+Time: 1.0s - Starting Priority Level 2
+Time: 1.0s - Finished Priority Level 2
+Time: 1.0s - Starting Priority Level 3
+Time: 1.0s - Action: Task 2 started
+Time: 3.0s - Action: Task 2 completed
+Time: 3.0s - Finished Priority Level 3
+Time: 3.0s - Starting Priority Level 4
+Time: 3.0s - Finished Priority Level 4
+Time: 3.0s - Starting Priority Level 5
+Time: 3.0s - Action: Task 3 started
+Time: 5.0s - Action: Task 3 completed
+Time: 5.0s - Finished Priority Level 5
 ```
 
 ### Part 4b: Advanced Priority Scheduler
@@ -329,11 +356,11 @@ async def task4b():
     
     # Define some test tasks
     async def high_priority_task(name):
-        await trio.sleep(2)
+        await trio.sleep(1)
         return f"Result from {name}"
     
     async def low_priority_task(name):
-        await trio.sleep(5)
+        await trio.sleep(2)
         return f"Result from {name}"
 
     # Add initial tasks
@@ -346,7 +373,7 @@ async def task4b():
         nursery.start_soon(scheduler.run)
         
         # Add more tasks while scheduler is running
-        await trio.sleep(1)
+        await trio.sleep(0.5)
         task4_id = await scheduler.add_task(high_priority_task, 2, "Task4")
         
         # Cancel a task
@@ -359,7 +386,7 @@ async def task4b():
         
         # After 10 seconds, request scheduler shutdown
         task6_id = await scheduler.add_task(low_priority_task, 5, "Task5")
-        await trio.sleep(9)
+        await trio.sleep(6)
         await scheduler.shutdown()
     
     # Print statistics
@@ -368,31 +395,31 @@ async def task4b():
 
 **Expected Output**
 ```
-Time: 0.000s - Action: Task 1 added
-Time: 0.000s - Action: Task 2 added
-Time: 0.000s - Action: Task 3 added
-Time: 0.000s - Starting Priority Level 1
-Time: 0.000s - Action: Task 1 started
-Time: 1.001s - Action: Task 4 added
-Time: 1.503s - Action: Task 3 removed
-Time: 2.001s - Action: Task 1 completed
-Time: 2.002s - Finished Priority Level 1
-Time: 2.002s - Starting Priority Level 2
-Time: 2.002s - Action: Task 4 started
-Time: 2.003s - Action: Task 2 rescheduled
-Time: 2.003s - Action: Task 5 added
-Time: 2.003s - Action: Task 2 started
-Time: 4.003s - Action: Task 4 completed
-Time: 7.004s - Action: Task 2 completed
-Time: 7.004s - Finished Priority Level 2
-Time: 7.004s - Starting Priority Level 3
-Time: 7.004s - Finished Priority Level 3
-Time: 7.004s - Starting Priority Level 4
-Time: 7.004s - Finished Priority Level 4
-Time: 7.004s - Starting Priority Level 5
-Time: 7.004s - Action: Task 5 started
-Time: 11.005s - Starting Shutdown
-Time: 11.005s - Action: Task 5 stopped
-Time: 11.005s - Finished Priority Level 5
-Time: 11.106s - Finished Shutdown
+Time: 0.0s - Action: Task 1 added
+Time: 0.0s - Action: Task 2 added
+Time: 0.0s - Action: Task 3 added
+Time: 0.0s - Starting Priority Level 1
+Time: 0.0s - Action: Task 1 started
+Time: 0.5s - Action: Task 4 added
+Time: 1.0s - Action: Task 1 completed
+Time: 1.0s - Finished Priority Level 1
+Time: 1.0s - Starting Priority Level 2
+Time: 1.0s - Action: Task 3 removed
+Time: 1.0s - Action: Task 4 started
+Time: 1.5s - Action: Task 2 rescheduled
+Time: 1.5s - Action: Task 5 added
+Time: 1.5s - Action: Task 2 started
+Time: 2.0s - Action: Task 4 completed
+Time: 3.5s - Action: Task 2 completed
+Time: 3.5s - Finished Priority Level 2
+Time: 3.5s - Starting Priority Level 3
+Time: 3.5s - Finished Priority Level 3
+Time: 3.5s - Starting Priority Level 4
+Time: 3.5s - Finished Priority Level 4
+Time: 3.5s - Starting Priority Level 5
+Time: 3.5s - Action: Task 5 started
+Time: 5.5s - Action: Task 5 completed
+Time: 5.5s - Finished Priority Level 5
+Time: 7.5s - Starting Shutdown
+Time: 7.6s - Finished Shutdown
 ```
