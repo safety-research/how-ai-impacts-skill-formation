@@ -79,20 +79,19 @@ async def test_delayed_hello():
 
 @pytest.mark.task1
 @pytest.mark.trio
-async def test_task1_timing():
-    """Test that task1 completes in the expected time."""
+async def test_task1a_timing():
+    """Test that task1a completes in the expected time."""
     with trio.move_on_after(3):
         start_time = trio.current_time()
-        await solution_module.task1()
+        await solution_module.task1a()
         end_time = trio.current_time()
         
     elapsed_time = end_time - start_time
     # We expect task1 to take about 2.5 seconds (the TIMEOUT value)
     assert 2.4 <= elapsed_time <= 2.6, f"Expected task1 to take ~2.5 seconds, got {elapsed_time:.2f} seconds"
 
-
 # Test get_user_id function
-@pytest.mark.task2
+@pytest.mark.task1
 @pytest.mark.trio
 async def test_get_user_id_success():
     """Test get_user_id with even user_id (success case)"""
@@ -100,14 +99,14 @@ async def test_get_user_id_success():
     result = await solution_module.get_user_id(2)
     assert result == {"id": 2, "username": "User 2"}
 
-@pytest.mark.task2
+@pytest.mark.task1
 @pytest.mark.trio
 async def test_get_user_id_failure():
     """Test get_user_id with odd user_id (failure case)"""
     with pytest.raises(ValueError, match="User 1 not found"):
         await solution_module.get_user_id(1)
 
-@pytest.mark.task2
+@pytest.mark.task1
 @pytest.mark.trio
 async def test_get_user_data_all_valid():
     """Test get_user_data with all valid (even) user IDs"""
@@ -123,7 +122,7 @@ async def test_get_user_data_all_valid():
     if cancel_scope.cancelled_caught: 
         pytest.fail("Test timed out")
 
-@pytest.mark.task2
+@pytest.mark.task1
 @pytest.mark.trio
 async def test_get_user_data_all_invalid():
     """Test get_user_data with all invalid (odd) user IDs"""
@@ -138,15 +137,14 @@ async def test_get_user_data_all_invalid():
     if cancel_scope.cancelled_caught: 
         pytest.fail("Test timed out")
 
-# Test task2 function (optional, as it's mainly for demonstration)
-@pytest.mark.task2
+@pytest.mark.task1
 @pytest.mark.trio
-async def test_task2_timing():
+async def test_task1b_timing():
     """Test that task2 can be executed without errors"""
-    # This is a basic test to ensure task2 runs without raising exception
+    # This is a basic test to ensure task1b runs without raising exception
     with trio.move_on_after(3):
         start_time = trio.current_time()
-        await solution_module.task2()
+        await solution_module.task1b()
     end_time = trio.current_time()
     
     elapsed_time = end_time - start_time
@@ -488,14 +486,17 @@ async def test_run_priority_order():
     await scheduler.add_task(test_task, 1, "Task1")  # Highest priority
     await scheduler.add_task(test_task, 5, "Task5")  # Lowest priority
     await scheduler.add_task(test_task, 2, "Task1b") # Also highest priority
-    
-    # Run the scheduler
-    await scheduler.run()
+    with trio.move_on_after(3) as cancel_scope:
+        # Run the scheduler
+        await scheduler.run()
 
-    # Check execution order in the log
-    started_tasks = [entry['task_id'] for entry in scheduler.log if entry['action'] == 'started']
-    expected_order = [2, 4, 1, 3]  # Based on the priorities: Task1, Task1b, Task3, Task5
-    assert started_tasks == expected_order, f"Expected start order {expected_order}, got {started_tasks}"
+        # Check execution order in the log
+        started_tasks = [entry['task_id'] for entry in scheduler.log if entry['action'] == 'started']
+        expected_order = [2, 4, 1, 3]  # Based on the priorities: Task1, Task1b, Task3, Task5
+        assert started_tasks == expected_order, f"Expected start order {expected_order}, got {started_tasks}"
+    
+    if cancel_scope.cancelled_caught: 
+        pytest.fail("Test timed out")
 
 
 # Test task status tracking
@@ -524,14 +525,18 @@ async def test_task_status_tracking():
         await trio.sleep(0.05)  # Wait a bit for the task to start
         status_during_run = scheduler.task_statuses[task_id]
     
-    # Run both the scheduler and status checker
-    async with trio.open_nursery() as nursery:
-        nursery.start_soon(check_status)
-        nursery.start_soon(scheduler.run)
+    with trio.move_on_after(3) as cancel_scope:
+        # Run both the scheduler and status checker
+        async with trio.open_nursery() as nursery:
+            nursery.start_soon(check_status)
+            nursery.start_soon(scheduler.run)
+        
+        # Check status during and after execution
+        assert status_during_run == 'running'
+        assert scheduler.task_statuses[task_id] == 'completed'
     
-    # Check status during and after execution
-    assert status_during_run == 'running'
-    assert scheduler.task_statuses[task_id] == 'completed'
+    if cancel_scope.cancelled_caught: 
+        pytest.fail("Test timed out")
 
 
 # Integration test - full execution flow
@@ -547,48 +552,51 @@ async def test_full_execution_flow():
     scheduler = solution_module.BasicPriorityScheduler()
     # Define some test tasks
     async def high_priority_task(name):
-        await trio.sleep(1)
+        await trio.sleep(0.5)
         return f"Result from {name}"
     
     async def low_priority_task(name):
-        await trio.sleep(2)
+        await trio.sleep(1.5)
         return f"Result from {name}"
     
     # Add tasks
     await scheduler.add_task(high_priority_task, 1, "HighPriority")
     await scheduler.add_task(low_priority_task, 3, "MediumPriority")
     await scheduler.add_task(low_priority_task, 5, "LowPriority")
+    with trio.move_on_after(4) as cancel_scope:
+        # Run the scheduler
+        await scheduler.run()
+        
+        # Check all tasks are marked completed
+        completed_tasks = scheduler.get_tasks_by_status('completed')
+        assert len(completed_tasks) == 3
+        
+        # Verify no tasks are still pending or running
+        assert len(scheduler.get_tasks_by_status('pending')) == 0
+        assert len(scheduler.get_tasks_by_status('running')) == 0
+        
+        # Check log for correct sequence of priority levels
+        priority_starts = [entry for entry in scheduler.log if entry['action'] == 'Starting Priority Level']
+        priority_order = [entry['task_id'] for entry in priority_starts]
+        assert priority_order == [1, 2, 3, 4, 5]
     
-    # Run the scheduler
-    await scheduler.run()
     
-    # Check all tasks are marked completed
-    completed_tasks = scheduler.get_tasks_by_status('completed')
-    assert len(completed_tasks) == 3
-    
-    # Verify no tasks are still pending or running
-    assert len(scheduler.get_tasks_by_status('pending')) == 0
-    assert len(scheduler.get_tasks_by_status('running')) == 0
-    
-    # Check log for correct sequence of priority levels
-    priority_starts = [entry for entry in scheduler.log if entry['action'] == 'Starting Priority Level']
-    priority_order = [entry['task_id'] for entry in priority_starts]
-    assert priority_order == [1, 2, 3, 4, 5]
 
-    # Check that each "Starting Priority Level" is followed by "Finishing Priority Level" before the next level
-    current_priority = None
-    for entry in scheduler.log:
-        if entry['action'] == 'Starting Priority Level':
-            if current_priority is not None:
-                # Ensure the previous priority level was finished
-                assert any(e['action'] == 'Finished Priority Level' and e['task_id'] == current_priority for e in scheduler.log), \
-                    f"Priority level {current_priority} was not finished before starting {entry['task_id']}"
-            current_priority = entry['task_id']
-        elif entry['action'] == 'Finished Priority Level':
-            assert entry['task_id'] == current_priority, \
-                f"Finished Priority Level {entry['task_id']} does not match current priority {current_priority}"
-            current_priority = None
-
+        # Check that each "Starting Priority Level" is followed by "Finishing Priority Level" before the next level
+        current_priority = None
+        for entry in scheduler.log:
+            if entry['action'] == 'Starting Priority Level':
+                if current_priority is not None:
+                    # Ensure the previous priority level was finished
+                    assert any(e['action'] == 'Finished Priority Level' and e['task_id'] == current_priority for e in scheduler.log), \
+                        f"Priority level {current_priority} was not finished before starting {entry['task_id']}"
+                current_priority = entry['task_id']
+            elif entry['action'] == 'Finished Priority Level':
+                assert entry['task_id'] == current_priority, \
+                    f"Finished Priority Level {entry['task_id']} does not match current priority {current_priority}"
+                current_priority = None
+    if cancel_scope.cancelled_caught: 
+            pytest.fail("Test timed out")
 
 @pytest.mark.task7
 @pytest.mark.trio
@@ -754,22 +762,26 @@ async def test_add_task_while_running():
         results['short'] = "Short task finished"
         return results['short']
     
-    # Add initial task (long running, lower priority)
-    await scheduler.add_task(long_task, 3, "long_task")
-    
-    # Start the scheduler and add new task while it's running
-    async with trio.open_nursery() as nursery:
-        nursery.start_soon(scheduler.run)
-        nursery.start_soon(add_new_task)
-    
-    scheduler.print_statistics()
-    # Verify both tasks completed and the new task was added successfully
-    new_task_start_time = [r['time'] for r in scheduler.log if r['action'] == 'started' and r['task_id']==2][0]
-    old_task_finish_time = [r['time'] for r in scheduler.log if r['action'] == 'completed' and r['task_id']==1][0]
-    assert new_task_start_time < old_task_finish_time
-    assert 'long' in results
-    assert 'short' in results
-    assert 'added_id' in results
+    with trio.move_on_after(3) as cancel_scope:
+        # Add initial task (long running, lower priority)
+        await scheduler.add_task(long_task, 3, "long_task")
+
+        # Start the scheduler and add new task while it's running
+        async with trio.open_nursery() as nursery:
+            nursery.start_soon(scheduler.run)
+            nursery.start_soon(add_new_task)
+        
+        scheduler.print_statistics()
+        # Verify both tasks completed and the new task was added successfully
+        new_task_start_time = [r['time'] for r in scheduler.log if r['action'] == 'started' and r['task_id']==2][0]
+        old_task_finish_time = [r['time'] for r in scheduler.log if r['action'] == 'completed' and r['task_id']==1][0]
+        assert new_task_start_time < old_task_finish_time
+        assert 'long' in results
+        assert 'short' in results
+        assert 'added_id' in results
+
+    if cancel_scope.cancelled_caught: 
+        pytest.fail("Test timed out")
 
 if __name__ == "__main__":
     pytest.main(["-v", __file__])
