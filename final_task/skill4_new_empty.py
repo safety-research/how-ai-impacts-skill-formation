@@ -5,14 +5,23 @@ import os
 import requests
 import pandas as pd
 
+import trio
+import time
+import httpx
+import os
+import requests
+import pandas as pd
+
 ############## TASK 1 ###################
 async def timer() -> None: 
+    """Prints the number of seconds that have passed starting at '1s' """
     raise NotImplementedError("timer") 
 
 async def delayed_hello() -> None: 
+    """Sleeps for 2.1 seconds and the prints 'Hello, World!' """
     raise NotImplementedError("delayed_hello")  
 
-async def task1a():
+async def task1():
     """
     In this task, you will use the trio library to write two async functions. 
     Your task is to complete the timer and delayed_hello functions. 
@@ -20,23 +29,35 @@ async def task1a():
     print("Starting...")
     TIMEOUT = 2.5
     with trio.move_on_after(TIMEOUT): 
-        async with trio.open_nursery() as nursery: 
-            nursery.start_soon(timer) # implement the timer function 
-            nursery.start_soon(delayed_hello) # implement the delayed hello function 
+        # TODO: start trio nursery
+        # TODO: start timer function
+        # TODO: start delayed_hello
+        pass 
     print("Completed!")
     return 
 
-async def get_user_id(user_id: int) -> dict:
-    raise NotImplementedError("Implement get_user_id") 
+############## END TASK 1 ###################
 
-async def get_user_data(user_ids: list[int]) -> dict[dict]:
-    raise NotImplementedError("Implement get_user_data") 
 
-async def task1b(): 
+############## TASK 2 #######################
+async def get_user_id(user_id: int) -> str:
+    await trio.sleep(1)
+    if user_id % 2 == 0: 
+        return f"User-{user_id}"
+    else: 
+        raise ValueError(f"User {user_id} not found")
+
+async def get_user_data(user_ids: list[int]) -> dict[str]:
     """
-    In this task, you will implement error handling in using the trio library. In this test case, we create a list of 5 user IDs (mix of even and odd numbers). We call get_user_data() with this list
-    Prints "Results:" followed by the results dictionary
-    Prints "Errors:" followed by the errors list
+    Asynchronously fetch user_ids using get_user_id. Store the result as 'error' if 
+    an error is encountered. 
+    """
+    raise NotImplementedError("Implement get_user_data") 
+    
+    
+async def task2(): 
+    """
+    In this task, you will implement error handling . In this test case, we create a list of 5 user IDs (mix of even and odd numbers). We call get_user_data() with this list. 
     """
     user_ids = [1, 2, 3, 4, 5]
     results= await get_user_data(user_ids)
@@ -44,33 +65,43 @@ async def task1b():
     for user_id, result in results.items(): 
         print(f"User {user_id}: {result}")
 
-############## END TASK 1 ###################
+############## END TASK 2 ###################
 
-############## TASK 2 #######################
-async def download_file(url: str, client: httpx.AsyncClient, name: str, download_dir: str) -> None:
+############## TASK 3 #######################
+async def download_and_save_text(url: str, client: httpx.AsyncClient, name: str, download_dir: str) -> None:
     """Implement an async function for downloading a file from an url.
     """
-    raise NotImplementedError("Implement download_file") 
+    print(f"Downloading {name}...")
+    raise NotImplementedError("Implement download_and_save_text") 
     print(f"Finished downloading {name}")
 
 
-async def task2(): 
+async def task3(): 
     """Download multiple classic books in parallel using trio and httpx.
     
-    This function will set up an async HTTP client and use trio to download multiple files concurrently
+    This function will set up an async HTTP client and use trio to download multiple pages concurrently
     """
     # Dictionary mapping book names to their download URLs
-    FILES_TO_DOWNLOAD = {
+    download_books = {
         "War and Peace": "https://www.gutenberg.org/files/2600/2600-0.txt",
         "Pride and Prejudice": "https://www.gutenberg.org/cache/epub/1342/pg1342.txt",
         "The Adventures of Sherlock Holmes": "https://www.gutenberg.org/files/1661/1661-0.txt",
     }
     DOWNLOAD_DIR = "downloads"
-    raise NotImplementedError("Implement task2")
+    os.makedirs(DOWNLOAD_DIR, exist_ok=True)
+    raise NotImplementedError("Implement task")
 
-############## END TASK 2 ###################
+############## END TASK 3 ###################
 
-############## TASK 3 #######################
+############## TASK 4 #######################
+import trio
+import time
+import httpx
+import os
+import requests
+import pandas as pd
+
+############## TASK 4 #######################
 async def get_json_from_url_with_semaphore(semaphore:trio.Semaphore, 
                                            send_channel: trio.MemorySendChannel, 
                                            url: str, 
@@ -89,7 +120,7 @@ async def close_after_timeout(send_channel: trio.MemorySendChannel):
     print("Closing channel after timeout")
     send_channel.close()
 
-async def task3a(): 
+async def task4a(): 
     """
     In this task, you will use trio's async functionality to assemble an economic database while limiting the number of concurrents.
     """
@@ -132,7 +163,7 @@ async def consume_data(receive_channel: trio.MemoryReceiveChannel, all_dfs: list
     raise NotImplementedError("Implement consume_data")
 
 
-async def task3b(): 
+async def task4b(): 
     """
     This task will extend the previous step to a more efficient producer-consumer pattern for data processing
     """
@@ -167,9 +198,9 @@ async def task3b():
             GDP2 = int(group[group['date'] == '2019']['value'].iloc[0])
             print(country_mapping[id], f"GDP Growth: {(GDP2-GDP1)/GDP1*100:.3f}%")
 
-############## END TASK 3 ###################
+############## END TASK 4 ###################
 
-############## TASK 4 #######################
+############## TASK 5 #######################
 class BasicPriorityScheduler:
     """
     A basic priority-based task scheduler using Python's Trio library.
@@ -217,7 +248,7 @@ class BasicPriorityScheduler:
         """
         raise NotImplementedError("Implement run")
         
-async def task4a(): 
+async def task5a(): 
     """
     Test function for BasicPriorityScheduler
     """
@@ -297,7 +328,7 @@ class AdvancedPriorityScheduler:
         """
         raise NotImplementedError("Implement shutdown")
 
-async def task4b(): 
+async def task5b(): 
     """
     Test function for AdvancedPriorityScheduler
     """
@@ -340,28 +371,4 @@ async def task4b():
     
     # Print statistics
     scheduler.print_statistics()
-############## END TASK 4 ###################
-
-if __name__ == "__main__":
-    # Here we will test the code you have written for each task
-    # Uncomment one test at a time to meet the max duration
-    print("Running Task 1a: Delayed Hello")
-    trio.run(task1a)
-
-    # print("Running Task 1b: Error Handling")
-    # trio.run(task1b)
-
-    # print("Running Task 2: Download Files")
-    # trio.run(task2)
-
-    # print("Running Task 3a: API Download")
-    # trio.run(task3a)
-
-    # print("Running Task 3b: API Download Producer-Consumer")
-    # trio.run(task3b)
-
-    # print("Running Task 4a: BasicPriorityScheduler")
-    # trio.run(task4a)
-
-    # print("Running Task 4b: AdvancedPriorityScheduler")
-    # trio.run(task4b)
+############## END TASK 5 ###################
