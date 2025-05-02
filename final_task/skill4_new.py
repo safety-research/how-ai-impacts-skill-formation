@@ -5,25 +5,22 @@ import os
 import requests
 import pandas as pd
 
+############## TASK 1 ###################
 async def timer() -> None: 
-    ### YOUR CODE STARTS HERE
-    i = 1 
+    """Prints the number of seconds that have passed starting at '1s' """
+    seconds = 1
     while True: 
         await trio.sleep(1)
-        if i ==1: 
-            print(f"{i} second has passed")
-        else: 
-            print(f"{i} seconds have passed")
-        i+=1 
-    ### YOUR CODE ENDS HERE
+        print(f"{seconds}s")
+        seconds += 1
+
 
 async def delayed_hello() -> None: 
-    ### YOUR CODE STARTS HERE
+    """Sleeps for 2.1 seconds and the prints 'Hello, World!' """
     await trio.sleep(2.1)
-    print("Hello, World!")
-    ### YOUR CODE ENDS HERE
+    print('Hello, World!') 
 
-async def task1a():
+async def task1():
     """
     In this task, you will use the trio library to write two async functions. 
     Your task is to complete the timer and delayed_hello functions. 
@@ -32,45 +29,43 @@ async def task1a():
     TIMEOUT = 2.5
     with trio.move_on_after(TIMEOUT): 
         async with trio.open_nursery() as nursery: 
-            nursery.start_soon(timer) # implement the timer function 
-            nursery.start_soon(delayed_hello) # implement the delayed hello function 
+            nursery.start_soon(timer)
+            nursery.start_soon(delayed_hello)
     print("Completed!")
     return 
 
-async def get_user_id(user_id: int) -> dict:
-    ### YOUR CODE STARTS HERE
+############## END TASK 1 ###################
+
+
+############## TASK 2 #######################
+async def get_user_id(user_id: int) -> str:
     await trio.sleep(1)
     if user_id % 2 == 0: 
-        return {"id": user_id, "username": f"User {user_id}"}
+        return f"User-{user_id}"
     else: 
         raise ValueError(f"User {user_id} not found")
-    ### YOUR CODE ENDS HERE 
 
-async def get_user_data(user_ids: list[int]) -> dict[dict]:
-    results = {}
-    
+async def get_user_data(user_ids: list[int]) -> dict[str]:
+    """
+    Asynchronously fetch user_ids using get_user_id. Store the result as 'error' if 
+    an error is encountered. 
+    """
+    results = {} 
     async def _fetch_and_store(user_id): 
-        ### YOUR CODE STARTS HERE
         try: 
             result = await get_user_id(user_id)
-            results[user_id] = {"status": "success", "data": result}
-        except ValueError as e: 
-            results[user_id] = {"status": "error", "error": str(e)}
-        ### YOUR CODE ENDS HERE
+        except: 
+            result = 'error'
+        results[user_id] = result
     
-    ### YOUR CODE STARTS HERE
     async with trio.open_nursery() as nursery: 
-        for user_id in user_ids: 
-            nursery.start_soon(_fetch_and_store, user_id)
-    
-    return results
-    ### YOUR CODE ENDS HERE 
+        for id in user_ids: 
+            nursery.start_soon(_fetch_and_store, id)
+    return results 
 
-async def task1b(): 
+async def task2(): 
     """
-    In this task, you will implement error handling in using the trio library. In this test case, we create a list of 5 user IDs (mix of even and odd numbers). We call get_user_data() with this list
-    Prints "Results:" followed by the results dictionary
-    Prints "Errors:" followed by the errors list
+    In this task, you will implement error handling . In this test case, we create a list of 5 user IDs (mix of even and odd numbers). We call get_user_data() with this list. 
     """
     user_ids = [1, 2, 3, 4, 5]
     results= await get_user_data(user_ids)
@@ -78,115 +73,143 @@ async def task1b():
     for user_id, result in results.items(): 
         print(f"User {user_id}: {result}")
 
+############## END TASK 2 ###################
 
-async def download_file(url: str, client: httpx.AsyncClient, name: str, download_dir: str) -> None:
+############## TASK 3 #######################
+async def download_and_save_text(url: str, client: httpx.AsyncClient, name: str, download_dir: str) -> None:
     """Implement an async function for downloading a file from an url.
     """
+    print(f"Downloading {name}...")
     ### YOUR CODE STARTS HERE
-    response = await client.get(url)
-    with open(os.path.join(download_dir, f'{name}.txt'), "wb") as f:
-        f.write(response.content)
+    result = await client.get(url)
+    with open(f"{download_dir}/{name}.txt" , 'wb') as f: 
+        f.write(result.content)
     ### YOUR CODE ENDS HERE
     print(f"Finished downloading {name}")
 
-async def task2(): 
+
+async def task3(): 
     """Download multiple classic books in parallel using trio and httpx.
     
-    This function will set up an async HTTP client and use trio to download multiple files concurrently
+    This function will set up an async HTTP client and use trio to download multiple pages concurrently
     """
     # Dictionary mapping book names to their download URLs
-    FILES_TO_DOWNLOAD = {
+    download_books = {
         "War and Peace": "https://www.gutenberg.org/files/2600/2600-0.txt",
         "Pride and Prejudice": "https://www.gutenberg.org/cache/epub/1342/pg1342.txt",
         "The Adventures of Sherlock Holmes": "https://www.gutenberg.org/files/1661/1661-0.txt",
     }
     DOWNLOAD_DIR = "downloads"
-    ### YOUR CODE STARTS HERE
-
     os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient() as client: 
         async with trio.open_nursery() as nursery:
-            for i, (name, url) in enumerate(FILES_TO_DOWNLOAD.items()):
-                    print(f"({i+1}) Downloading {name}...")
-                    nursery.start_soon(download_file, url, client, name, DOWNLOAD_DIR)
+            for name, url in download_books.items(): 
+                nursery.start_soon(download_and_save_text, 
+                                   url, client, name, DOWNLOAD_DIR)      
 
+############## END TASK 3 ###################
 
-async def get_json_from_url_with_semaphore(semaphore:trio.Semaphore, 
-                                           send_channel: trio.MemorySendChannel, 
-                                           url: str, 
-                                           client: httpx.AsyncClient): 
+############## BEGIN TASK 4 ###################
+
+def get_gdp_from_response(response) -> dict | None:
     """
-    This is a helper function that will get the individual web responses. It is important to control the number 
-    of concurrent threads to not overwhelm the API server. In this fuction you will
-    1. Use the semaphore to control the number of total threads - specified in the parent function 
-    2. Get response from each url and convert into json and then into a dataframe (select the 'countryiso3code', 'date' and 'value')
-    3. Send the final df into the send_channel
+    Extracts GDP data from a World Bank API response.
+
+    Args:
+        response: The HTTP response object from the World Bank API.
+
+    Returns:
+        dict: Dictionary with 'country' and 'gdp' keys if data is present.
+        None: If no data is available in the response.
+    """
+    data = response.json()
+    if not isinstance(data, list) or len(data) < 2 or not isinstance(data[1], list):
+        return None
+    df = pd.DataFrame.from_dict(data[1]).dropna()
+    if len(df) == 0:
+        return None
+    results = {
+        'country': df['countryiso3code'].values[0],
+        'gdp': df['value'].values[0]
+    }
+    return results
+
+async def get_response_with_semaphore(
+    semaphore: trio.Semaphore,
+    send_channel: trio.MemorySendChannel,
+    url: str,
+    client: httpx.AsyncClient
+):
+    """
+    Fetches a single URL using a semaphore to limit concurrency, processes the response,
+    and sends the result through a Trio memory channel.
+
+    Args:
+        semaphore (trio.Semaphore): Semaphore to control concurrency.
+        send_channel (trio.MemorySendChannel): Channel to send results.
+        url (str): The URL to fetch.
+        client (httpx.AsyncClient): The HTTP client to use for requests.
     """
     ### YOUR CODE STARTS HERE
     async with semaphore: 
         response = await client.get(url)
-        df = pd.DataFrame.from_dict(response.json()[1]).dropna()
-        if len(df) == 0: 
-            pass 
-        else: 
-            await send_channel.send(df[['countryiso3code', 'date', 'value']])
+        
+        gdp_dict = get_gdp_from_response(response)
+        if gdp_dict is not None: 
+            await send_channel.send(gdp_dict)
     
     ### YOUR CODE ENDS HERE
 
 async def close_after_timeout(send_channel: trio.MemorySendChannel):
-    await trio.sleep(3) 
+    """
+    Waits for 3 seconds and then closes the provided send channel.
+
+    Args:
+        send_channel (trio.MemorySendChannel): The channel to close.
+    """
+    await trio.sleep(3)
     print("Closing channel after timeout")
     send_channel.close()
 
-async def task3a(): 
+async def task4(): 
     """
-    In this task, you will use trio's async functionality to assemble an economic database while limiting the number of concurrents.
+    Fetches GDP data for a list of countries from the World Bank API concurrently,
+    limiting the number of concurrent requests, and prints the results.
+
+    Uses a semaphore to control concurrency and a memory channel to collect results.
     """
-    all_countries_url = "https://api.worldbank.org/v2/country?format=json"
-
-    response = requests.get(all_countries_url)
-    all_countries = pd.DataFrame.from_dict(response.json()[1]).head(20) 
-    country_ids = all_countries['id']
-    country_mapping = dict(zip(all_countries['id'], all_countries['name']))
-
+    country_ids = [
+        'ABW', 'AFE', 'AFG', 'AFR', 'AFW', 'AGO', 'ALB', 'AND', 'ARB', 'ARE',
+        'ARG', 'ARM', 'ASM', 'ATG', 'AUS', 'AUT', 'AZE', 'BDI', 'BEA', 'BEC'
+    ]
     MAX_THREADS = 5
-    NUM_RESULTS = len(country_ids)
+    BUFFER_SIZE = len(country_ids)
 
-    base_gdp_url = 'https://api.worldbank.org/v2/country/{country_str}/indicator/NY.GDP.MKTP.CD?date=1999:2019&format=json'
+    base_gdp_url = 'https://api.worldbank.org/v2/country/{country_str}/indicator/NY.GDP.MKTP.CD?date=2019&format=json'
 
     ## Create memory channel for results 
-    send_channel, receive_channel = trio.open_memory_channel(NUM_RESULTS)
-
-
-    ### YOUR CODE STARTS HERE
     
-    all_dfs = [] 
+    ### YOUR CODE STARTS HERE
+    send_channel, receive_channel = trio.open_memory_channel(BUFFER_SIZE)
+    all_results = []
+
     async with httpx.AsyncClient() as client:
         async with trio.open_nursery() as nursery:
             semaphore = trio.Semaphore(MAX_THREADS)
-            for i, country in enumerate(country_ids):
-                    url = base_gdp_url.format(country_str=country)
-                    nursery.start_soon(get_json_from_url_with_semaphore, semaphore, 
-                                                      send_channel, url, client)
-    
+            for country in country_ids:
+                url = base_gdp_url.format(country_str=country)
+                nursery.start_soon(
+                    get_response_with_semaphore, semaphore, send_channel, url, client
+                )
             nursery.start_soon(close_after_timeout, send_channel)
             
-    async for df in receive_channel: 
-        all_dfs.append(df)
-
+    async for country_gdp in receive_channel: 
+        all_results.append(country_gdp)
 
     ### YOUR CODE ENDS HERE
-    final_df = pd.concat(all_dfs)
-
-    for id in country_ids: 
-        group = final_df[final_df["countryiso3code"]==id]
-        if len(group) ==0 or len(group[group['date'].isin(['1999', '2019'])]) < 2: 
-            print(country_mapping[id], 'Missing data')
-        else: 
-            GDP1 = int(group[group['date'] == '1999']['value'].iloc[0])
-            GDP2 = int(group[group['date'] == '2019']['value'].iloc[0])
-            print(country_mapping[id], f"GDP Growth: {(GDP2-GDP1)/GDP1*100}%")
+    for country_gdp in all_results: 
+        print(f"country: {country_gdp['country']} GDP: {country_gdp['gdp'] / 1_000_000_000:.1f}B")
 
 async def consume_data(receive_channel: trio.MemoryReceiveChannel, all_dfs: list):
     """
@@ -195,8 +218,7 @@ async def consume_data(receive_channel: trio.MemoryReceiveChannel, all_dfs: list
     async for df in receive_channel:
         all_dfs.append(df)
 
-
-async def task3b(): 
+async def task4b(): 
     """
     This task will extend the previous step to a more efficient producer-consumer pattern for data processing
     """
@@ -241,6 +263,9 @@ async def task3b():
             GDP2 = int(group[group['date'] == '2019']['value'].iloc[0])
             print(country_mapping[id], f"GDP Growth: {(GDP2-GDP1)/GDP1*100}%")
 
+############## END TASK 4 ###################
+
+############## BEGIN TASK 5 ###################
 
 class BasicPriorityScheduler:
     """
@@ -330,7 +355,7 @@ class BasicPriorityScheduler:
                     nursery.start_soon(coro, args)
             self.log_event(action="Finished Priority Level", id=i)
         
-async def task4a(): 
+async def task5a(): 
     """
     Test function for BasicPriorityScheduler
     """
@@ -505,7 +530,7 @@ class AdvancedPriorityScheduler:
             else: 
                 print(f"Time: {row['time']:.1f}s - Action: Task {row['task_id']} {row['action']}")
 
-async def task4b(): 
+async def task5b(): 
     """
     Test function for AdvancedPriorityScheduler
     """
@@ -549,26 +574,27 @@ async def task4b():
     # Print statistics
     scheduler.print_statistics()
 
+############## END TASK 5 ###################
 
 if __name__ == "__main__":
     # Here we will test the code you have written for each task
-    print("Running Task 1: Delayed Hello")
-    trio.run(task1a)
+    # print("Running Task 1: Delayed Hello")
+    # trio.run(task1)
 
-    print("Running Task 2: Error Handling")
-    trio.run(task1b)
+    # print("Running Task 2: Error Handling")
+    # trio.run(task2)
 
-    print("Running Task 3: Download Files")
-    trio.run(task2)
+    # print("Running Task 3: Download Files")
+    # trio.run(task3)
 
     print("Running Task 4: API Download")
-    trio.run(task3a)
+    trio.run(task4)
 
-    print("Running Task 5: API Download Producer-Consumer")
-    trio.run(task3b)
+    # print("Running Task 5: API Download Producer-Consumer")
+    # trio.run(task3b)
 
-    print("Running Task 6")
-    trio.run(task4a)
+    # print("Running Task 6")
+    # trio.run(task4a)
 
-    print("Running Task 7")
-    trio.run(task4b)
+    # print("Running Task 7")
+    # trio.run(task4b)

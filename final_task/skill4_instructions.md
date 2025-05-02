@@ -93,12 +93,12 @@ User 1: 'error'
 In this task, you'll implement a solution to download multiple files concurrently using Python Trio. This is a common real-world scenario where async programming shines - when you need to perform multiple I/O-bound operations (like downloading files) in parallel. 
 
 ### httpx: a library with support for asynchronous web reqests
-httpx is a powerful HTTP client library for Python that supports both synchronous and asynchronous requests. The `httpx.Client()` class provides a convenient way to manage HTTP connections efficiently, allowing you to make multiple requests while reusing the same underlying connection pool. This is especially useful for downloading multiple files or making repeated API calls. Here is a link to the documentation: [HTTPX Async](https://www.python-httpx.org/async/). 
+httpx is a powerful HTTP client library for Python that supports both synchronous and asynchronous requests. The `httpx.AsyncClient()` class provides a convenient way to manage HTTP connections efficiently, allowing you to make multiple requests while reusing the same underlying connection pool. This is especially useful for downloading multiple files or making repeated API calls. Here is a link to the documentation: [HTTPX Async](https://www.python-httpx.org/async/). 
 
 You will implement the following:
 
 - ```download_and_save_text```: This function downloads the content from a single url asynchronously. 
-- ```task3```: This function will set up an async HTTP client and download multiple files in parallel using a trio nursery. You can use `httpx.Client()` to pass a client to the `dowload_and_save_text` function. 
+- ```task3```: This function will set up an async HTTP client and download multiple files in parallel using a trio nursery. You can use `httpx.AsyncClient()` to pass a client to the `dowload_and_save_text` function. 
 
 **Expected Output**: 
 ```
@@ -111,9 +111,11 @@ Finished downloading War and Peace
 ```
 You'll notice that files don't necessarily finish downloading in the order they started - this demonstrates the concurrent nature of async programming!
 
-## Task 4: Asynchronous API Calls with Trio 
+**Hint**: To verify your code, you can run `python main.py3` in the terminal and you should see the dowloads folder with your files if you run `ls downloads`. 
 
-### Task 4a: 
+## Task 4: Asynchronous API Calls with Trio 
+**Setup**: To begin make sure you run: ```pip install trio``` in the terminal.  
+
 In this part, you will implement an asynchronous functions to fetch economic data from the World Bank API while controlling concurrency.
 
 **Semaphores**
@@ -142,7 +144,7 @@ A **memory channel** in Trio is a way for tasks to communicate safely and effici
 
 
 Your task is to implement: 
-- `get_json_from_url_with_semaphore`: A function that uses a semaphore to control the number of concurrent requests (i.e. API Calls), fetches JSON data from a given URL and turns it into pandas DataFrame, and sends the processed DataFrame through a memory channel
+- `get_response_with_semaphore`: A function that uses a semaphore to control the number of concurrent requests (i.e. API Calls), it uses the helper function `get_gdp_from_response` and sends outputs that are not `None` through a memory channel
 - `close_after_timeout`: A function that waits 3 seconds and then closes the memory channel. 
 - `task4a`: The main task function that 
     1. Sets up memory channels for data flow
@@ -151,9 +153,9 @@ Your task is to implement:
     4. Controls concurrency with a semaphore
     5. Collects results from the channel after a timeout
 
-### Task 4b: 
-Building on Part 4a, you'll now implement a more efficient producer-consumer pattern for data processing. Your task is to complete: 
-- ```consume_data```: This function continuously receives data from a memory channel and appends each received DataFrame to a list
+**Bonus: Advanced Producer-Consumer API calls** 
+Building on the previous part, you'll can implement a more efficient producer-consumer pattern for data processing. Your task is to complete: 
+- ```consume_data```: This function continuously receives data from a memory channel and appends each recieved dictionary to a list
 - ```task4b```: This function 
     - creates nested nurseries for producers and consumers, 
     - starts a consumer task to process data as it becomes available, 
@@ -163,33 +165,32 @@ Building on Part 4a, you'll now implement a more efficient producer-consumer pat
 
 **Expected Output** For both part 4a and 4b. Results may appear in different order 
 ```
-Aruba GDP Growth: 97.10%
-Africa Eastern and Southern GDP Growth: 280.41%
-Afghanistan Missing data
-Africa Missing data
-Africa Western and Central GDP Growth: 492.60%
-Angola GDP Growth: 1052.26%
-Albania GDP Growth: 385.20%
-Andorra GDP Growth: 154.39%
-Arab World GDP Growth: 335.67%
-United Arab Emirates GDP Growth: 394.98%
-Argentina GDP Growth: 57.93%
-Armenia GDP Growth: 637.98%
-American Samoa Missing data
-Antigua and Barbuda GDP Growth: 106.50%
-Australia GDP Growth: 257.43%
-Austria GDP Growth: 104.69%
-Azerbaijan GDP Growth: 951.55%
-Burundi GDP Growth: 218.85%
-East Asia & Pacific (IBRD-only countries) Missing data
-Europe & Central Asia (IBRD-only countries) Missing data
+country: BDI GDP: 2.6B
+country: AUT GDP: 443.0B
+country: AZE GDP: 48.2B
+country: ARM GDP: 13.6B
+country: ASM GDP: 0.6B
+country: AUS GDP: 1392.7B
+country: ATG GDP: 1.7B
+country: ARG GDP: 447.8B
+country: ARE GDP: 418.0B
+country: AGO GDP: 70.9B
+country: ARB GDP: 2899.0B
+country: ALB GDP: 15.6B
+country: AND GDP: 3.2B
+country: AFW GDP: 826.5B
+country: AFG GDP: 18.8B
+country: ABW GDP: 3.4B
+country: AFE GDP: 1009.7B
 ```
 
 ## Task 5: Trio Priority Queue
+**Setup**: To begin make sure you run: ```pip install trio``` in the terminal.  
+
+In this last task, you will put together all your knowledge in Trio by implementing a priority scheduler. 
 
 ### Task 5a: Basic Priority Scheduler
-
-In this first part, you will implement a basic priority-based task scheduler that can add tasks with different priority levels, execute tasks in order of priority and track task information and execution status. You will implement the class ```BasicPriorityScheduler``` with the following capabilities:
+In this first part, you will implement a basic priority-based task scheduler that can add tasks with different priority levels, execute tasks in order of priority and track task information and execution status. You will implement the class `BasicPriorityScheduler` with the following capabilities:
 - Task management (adding, scheduling, and executing tasks)
 - Priority queue organization (5 levels)
 - Execution statistics 
@@ -230,40 +231,9 @@ Here are the basic components of the class you should implement.
             })
 ```
 
-You are also provided with helper functions: ```print_statistics``` and ```log_event``` to keep your implementation simple. 
+You are also provided with helper functions: `print_statistics` and `log_event` to keep your implementation simple. 
 
-Use the provided ```task5a()``` function to test your implementation. 
-```python 
-import trio
-import time
-
-async def task5a(): 
-    """
-    Test function for BasicPriorityScheduler
-    """
-    scheduler = BasicPriorityScheduler()
-    
-    # Define some test tasks
-    async def high_priority_task(name):
-        await trio.sleep(1)
-        return f"Result from {name}"
-    
-    async def low_priority_task(name):
-        await trio.sleep(2)
-        return f"Result from {name}"
-
-    # Add initial tasks
-    task1_id = await scheduler.add_task(high_priority_task, 1, "Task1")
-    task2_id = await scheduler.add_task(low_priority_task, 3, "Task2")
-    task3_id = await scheduler.add_task(low_priority_task, 5, "Task3")
-    
-    # Start the scheduler
-    async with trio.open_nursery() as nursery:
-        nursery.start_soon(scheduler.run)
-    
-    # Print statistics
-    scheduler.print_statistics()
-``` 
+Use the provided `task5a` function in the starter code to test your implementation. 
 
 **Expected Output**: 
 ```
@@ -289,61 +259,12 @@ Time: 5.0s - Finished Priority Level 5
 ```
 
 ### Part 5b: Advanced Priority Scheduler
-In this part, you will create an ```AdvancedPriorityScheduler``` that adds dynamic task management while the scheduler is running, task cancellation, task priority rescheduling, shutdown. You will need ot implement: 
-- ```cancel_task(self, task_id)```: Task cancellation with proper clean up 
-- ```reschedule(self, task_id, new_priority```: Priority level changes for existing tasks 
-- ```shutdown(self)```: Graceful shutdown of all running tasks
+In this part, you will create an `AdvancedPriorityScheduler` that adds dynamic task management while the scheduler is running, task cancellation, task priority rescheduling, shutdown. You will need ot implement: 
+- `cancel_task`: Task cancellation with proper clean up 
+- `reschedule`: This function changes the priority level of task and immediately starts running the task if the new priority level is higher than the currently executing priority level. 
+- `shutdown`: This function handles the shutdown of all running tasks. 
 
-
-Use the provided ```task5b()``` function to test your implementation. 
-```python 
-import trio
-import time
-
-async def task5b(): 
-    """
-    Test function for AdvancedPriorityScheduler
-    """
-    scheduler = AdvancedPriorityScheduler()
-    
-    # Define some test tasks
-    async def high_priority_task(name):
-        await trio.sleep(1)
-        return f"Result from {name}"
-    
-    async def low_priority_task(name):
-        await trio.sleep(2)
-        return f"Result from {name}"
-
-    # Add initial tasks
-    task1_id = await scheduler.add_task(high_priority_task, 1, "Task1")
-    task2_id = await scheduler.add_task(low_priority_task, 3, "Task2")
-    task3_id = await scheduler.add_task(low_priority_task, 5, "Task3")
-    
-    # Start the scheduler
-    async with trio.open_nursery() as nursery:
-        nursery.start_soon(scheduler.run)
-        
-        # Add more tasks while scheduler is running
-        await trio.sleep(0.5)
-        task4_id = await scheduler.add_task(high_priority_task, 2, "Task4")
-        
-        # Cancel a task
-        await trio.sleep(0.5)
-        await scheduler.cancel_task(task3_id)
-        
-        # Reschedule a task
-        await trio.sleep(0.5)
-        await scheduler.reschedule(task2_id, new_priority=1)
-        
-        # After 10 seconds, request scheduler shutdown
-        task6_id = await scheduler.add_task(low_priority_task, 5, "Task5")
-        await trio.sleep(6)
-        await scheduler.shutdown()
-    
-    # Print statistics
-    scheduler.print_statistics()
-``` 
+Use the provided `task5b` function to test your implementation. 
 
 **Expected Output**
 ```
