@@ -8,33 +8,46 @@
 
 Trio is a Python library designed for asynchronous programming. It provides a structured and easy-to-use approach to handling concurrency. Trio is particularly known for its focus on simplicity and correctness, making it a great choice for developers who want to write reliable asynchronous code without getting bogged down by the complexities often associated with concurrency.
 
-One of the core features of Trio is its use of "nurseries", which allow you to manage multiple asynchronous tasks concurrently. This structured concurrency model ensures that all tasks are properly managed and that any errors are handled gracefully.
-
-For example, consider the following usage of a nursery in Trio:
+One of the core features of Trio is its use of "nurseries", which allow you to manage multiple **concurrent** asynchronous tasks. For example, consider the following usage of a nursery in Trio:
 ```python
 async def parent():
     print("parent: started!")
-    async with trio.open_nursery() as nursery:
+    async with trio.open_nursery() as nursery: # asynchronous context manager 
         print("parent: spawning child1...")
-        nursery.start_soon(child1)
+        nursery.start_soon(child1) # schedules child1 to run concurrently
+        
+        print("parent: spawning child2...") # this prints immediately
+        nursery.start_soon(child2) # schedules child2 to run concurrently
 
-        print("parent: spawning child2...")
-        nursery.start_soon(child2)
+        print("parent: waiting ...") # this also prints immediately
+        # The nursery waits here until ALL child tasks complete
 
-        print("parent: waiting for children to finish...")
-        # -- we exit the nursery block here --
-    print("parent: all done!")
-trio.run(parent)
+    print("parent: all done!") # prints only after both children finish
+ 
+trio.run(parent) #runs a Trio async function
 ```
-The code above demonstrates handling multiple asynchronous tasks concurrently using Trio's structured concurrency model. It utilizes `trio.open_nursery()` to create an asynchronous context, and `nursery.start_soon(...)` to initiate functions that run asynchronously. The context is maintained until all functions within it have completed execution.
+The code above demonstrates concurrent execution using Trio's structured concurrency model. Some key points:
+
+- `trio.open_nursery()` creates a asynchronous context for managing concurrent tasks (must use `async with` to create)
+- `nursery.start_soon(...)` schedules functions to run concurrently but doesn't wait for them to complete (this function returns `None`)
+- The parent function continues executing immediately after each `start_soon()` call
+- Only when exiting the nursery context (the `async with` block) does the parent wait for all children to complete
 
 #### Trio's `sleep` Function
 
-In asynchronous programming, it's common to introduce delays or pauses in the execution of tasks. Trio provides the `trio.sleep()` function to achieve this. Unlike the traditional `time.sleep()` function, which blocks the entire thread, `trio.sleep()` is non-blocking and allows other tasks to run while waiting.
+In asynchronous programming, it's common to introduce delays or pauses in the execution of tasks. Trio provides the `trio.sleep()` function to achieve this. The `trio.sleep()` function takes a single argument, the number of seconds to sleep, and is used with the `await` keyword. For example:  
+```python
+async def child1():
+    print("child1: starting")
+    await trio.sleep(2)  # pauses child1 here for 2 seconds
+    print("child1: done") 
 
-The `trio.sleep()` function takes a single argument, the number of seconds to sleep, and is used with the `await` keyword. This allows the event loop to continue running other tasks during the sleep period, making it an essential tool for writing efficient asynchronous code.
-
-For example, using `await trio.sleep(1)` will pause the current task for 1 second, allowing other tasks to proceed during this time. This is particularly useful in scenarios where you need to wait for a certain condition or simply introduce a delay without halting the entire program.
+async def child2():
+    print("child2: starting") 
+    await trio.sleep(1)  # pauses child2 here for 1 second
+    print("child2: done")
+```
+When `await trio.sleep(2)` is encountered, `child1` pauses its execution for 2 seconds, but `child2` (running concurrently in the nursery) can continue executing during this time. This is why you might see "child2: done" print before "child1: done" even though child1 started first. Together, they only take 2 seconds to complete when running concurrently. 
 
 ### Task 1: Beginner Async Functions
 
@@ -44,7 +57,7 @@ Implement the missing code in the `timer`, `delayed_hello`, and `task1` function
 - `delayed_hello`: This function waits for 2.1 seconds and then after the delay, prints "Hello, World!"
 - `task1`: This function starts a nursery context and calls the `timer` and then the `delayed_hello` function.  
 
-Once you've completed these these three functions, you can compare your code to the expected output. For this warm-up task none of the functions return any values, they simply print statements. Make sure you run: ```pip install trio``` in the terminal before you test out your trio code. 
+Once you've completed these three functions, you can compare your code to the expected output. For this task none of the functions return any values, they simply print statements. Make sure you run: ```pip install trio``` in the terminal before you test out your trio code. 
 
 **Expected Output**: 
 ```
