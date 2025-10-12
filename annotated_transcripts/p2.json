@@ -1,0 +1,331 @@
+{
+  "pid": 2,
+  "condition": "AI",
+  "main_task_minutes": 21,
+  "warmup_task_minutes": 8,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:25",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:03:33",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:03:53",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "asking for capability question",
+      "codes": [
+        "capability_question"
+      ],
+      "query": "So what can you do for me here? Can you write code directly into the file?"
+    },
+    {
+      "timestamp": "00:04:15",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:05:17",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI implementation question",
+      "codes": [
+        "question"
+      ],
+      "query": "Yeah thanks. Can await trio.sleep() take a float as a parameter"
+    },
+    {
+      "timestamp": "00:05:31",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:06:01",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI implementation question",
+      "codes": [
+        "question"
+      ],
+      "query": "Im assuming delayed hello will look something like this right:\n\nawait time.sleep(2.1)\nprint(\"Hello, World!\")"
+    },
+    {
+      "timestamp": "00:06:21",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:06:25",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:07:05",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI implementation question",
+      "codes": [
+        "question"
+      ],
+      "query": "And then timer, will look something like\n\nwhile true:\nawait trio.sleep(1)"
+    },
+    {
+      "timestamp": "00:07:55",
+      "event_type": "code_copying",
+      "task_id": "1",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:08:00",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "AI malfunctioned, did not answer user question \"can you remind me how to create a nursery\"",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:10:26",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "SyntaxError: invalid syntax",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:10:50",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "ModuleNotFoundError: No module named 'trio'",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:11:12",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "RuntimeError: use 'async with open_nursery(...)', not 'with open_nursery(...)'",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:11:26",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "NameError: name 'true' is not defined. Did you mean: 'True'?",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:11:41",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "UnboundLocalError: local variable 'seconds' referenced before assignment",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:12:00",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:12:15",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:12:29",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:14:02",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:14:26",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asking about trio",
+      "codes": [
+        "question"
+      ],
+      "query": "Is there anything special about a dictionary used for sharing results in trio, or is it just a standard python dict?\n"
+    },
+    {
+      "timestamp": "00:15:44",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:15:54",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "can you complete this function?\n\nasync def _fetch_and_store(user_id):"
+    },
+    {
+      "timestamp": "00:17:12",
+      "event_type": "code_copying",
+      "task_id": "2",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:17:17",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:17:24",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asking addition question about generated code",
+      "codes": [
+        "question"
+      ],
+      "query": "shouldnt it be a valueerror?"
+    },
+    {
+      "timestamp": "00:18:21",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:18:29",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asking about better implementations",
+      "codes": [
+        "question"
+      ],
+      "query": "isnt it better to catch specific exceptions?"
+    },
+    {
+      "timestamp": "00:19:01",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:19:12",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asking for code completion",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "complete get_user_data"
+    },
+    {
+      "timestamp": "00:19:28",
+      "event_type": "paste",
+      "task_id": "2",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:20:48",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:21:30",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 12,
+    "task1_active_time": 4,
+    "task1_complete": true,
+    "task2_total_time": 9,
+    "task2_active_time": 2,
+    "task2_complete": true
+  }
+}

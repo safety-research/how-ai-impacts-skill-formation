@@ -1,0 +1,183 @@
+{
+  "pid": 5,
+  "condition": "AI",
+  "main_task_minutes": 29,
+  "warmup_task_minutes": 4,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:37",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:06:30",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:08:35",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "I need to create a timer using trio. It's going to be a child process in a nursery, and it needs to print the seconds elapsed indefinitely until a trio timeout"
+    },
+    {
+      "timestamp": "00:09:16",
+      "event_type": "code_copying",
+      "task_id": "1",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:09:58",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:10:20",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "question about calling function",
+      "codes": [
+        "question"
+      ],
+      "query": "how should I call this within a trio.move_on_after block?"
+    },
+    {
+      "timestamp": "00:11:40",
+      "event_type": "code_copying",
+      "task_id": "1",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:11:47",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:12:04",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "how should delayed_hello be implemented?"
+    },
+    {
+      "timestamp": "00:12:20",
+      "event_type": "code_copying",
+      "task_id": "1",
+      "description": "Copy AI code",
+      "codes": [
+        "code_generation"
+      ]
+    },
+    {
+      "timestamp": "00:13:05",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_complete"
+      ]
+    },
+    {
+      "timestamp": "00:13:33",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:13:47",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:19:48",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:24:29",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asking for code generation and explanation",
+      "codes": [
+        "code_generation",
+        "question"
+      ],
+      "query": "I need to create an aync function with trio that takes a list of user ids and returns a dict with the fetch results from a simulated api call. get_user_id simulates the api call, returning a string if the user id is valid, or a ValueError if it's invalid. The get_user_data function needs to gracefully handle those errors. The fetching tasks should be nursery tasks. Help get me started with setting this up"
+    },
+    {
+      "timestamp": "00:27:07",
+      "event_type": "code_copying",
+      "task_id": "2",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:28:34",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_complete"
+      ]
+    },
+    {
+      "timestamp": "00:28:57",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 13,
+    "task1_active_time": 2,
+    "task1_complete": true,
+    "task2_total_time": 15,
+    "task2_active_time": 3,
+    "task2_complete": true
+  }
+}

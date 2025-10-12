@@ -1,0 +1,250 @@
+{
+  "pid": 23,
+  "condition": "AI",
+  "main_task_minutes": 21,
+  "warmup_task_minutes": 7,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:38",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:04:18",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:07:15",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "User took a long time writing this query",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "Hey Cosmo, can you please help me with this? I need to complete the \"timer\" and \"delayed_hello\" functions. The \"timer\" function prints \"1s\" after 1 second, and then waits 1 second before printing \"2s\". It keeps going like that until manually stopped. The \"delayed_hello\" function should wait for 2.1 seconds, and then print \"Hello, World!\"."
+    },
+    {
+      "timestamp": "00:07:59",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:08:08",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:08:37",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:10:03",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "conceptual question and code writing",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "I don't know anything about this library, but that looks like a good implementation of the functions. Please set up the nursery inside task1 so that it functions properly with the two methods you completed for me."
+    },
+    {
+      "timestamp": "00:11:19",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_complete"
+      ]
+    },
+    {
+      "timestamp": "00:11:35",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:12:56",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "points out typo with the code",
+      "codes": [
+        "question"
+      ],
+      "query": "Two things: 1, you had a typo in your complete implementation of task1 (start_oon), and 2, is the entirety of the output supposed to come out at once? It seemed like all of the concurrently running tasks completed before I got any output?"
+    },
+    {
+      "timestamp": "00:14:32",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "asking question again because it was not answered in the last interaction",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:15:34",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "fix did not work but user believes it is correct",
+      "codes": [
+        "question",
+        "thanks"
+      ],
+      "query": "I'm still seeing all of the code appear at once, but I think it might be due to the environment? The implementation looks correct, though, so good job!"
+    },
+    {
+      "timestamp": "00:15:50",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:16:02",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:17:59",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:18:33",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asking for code generation from instructions directly",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "Hey Cosmo, I've been given the following set of instructions to accomplish with this task, can you please help me with it?"
+    },
+    {
+      "timestamp": "00:18:39",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:18:44",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "adding instructions",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "Here's the instructions:"
+    },
+    {
+      "timestamp": "00:18:46",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:18:54",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "pasting instructions in the second message",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "Implement the get_user_data function that: fetches user data for multiple user IDs concurrently, handles errors gracefully (storing 'error' for failed requests), and returns a dictionary mapping user IDs to their results\n\nImplementation Requirements\n(1) Create a shared results dictionary inside get_user_data to store results.\n(2) Define an async helper function async def _fetch_and_store inside get_user_data that:\n\nTakes a single user_id parameter\nUses try/except to safely call await get_user_id(user_id)\nOn success: stores the returned value in the results dictionary\nOn exception: stores the string 'error' in results dictionary\nThis helper function doesn't return a value. Instead it modifies the shared `results' dictionary.\n(3) Use a Trio nursery to run tasks concurrently:"
+    },
+    {
+      "timestamp": "00:19:17",
+      "event_type": "paste",
+      "task_id": "2",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:19:45",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:20:28",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:20:46",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "thank the ai",
+      "codes": [
+        "thanks"
+      ],
+      "query": "Great job, we got the expected output on the first try."
+    },
+    {
+      "timestamp": "00:21:04",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 15,
+    "task1_active_time": 1,
+    "task1_complete": true,
+    "task2_total_time": 5,
+    "task2_active_time": 0,
+    "task2_complete": true
+  }
+}

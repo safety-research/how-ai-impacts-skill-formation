@@ -1,0 +1,164 @@
+{
+  "pid": 12,
+  "condition": "AI",
+  "main_task_minutes": 17,
+  "warmup_task_minutes": 11,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:32",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:06:04",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:07:05",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "verifying code",
+      "codes": [
+        "question"
+      ],
+      "query": "can you check this timer coroutine?"
+    },
+    {
+      "timestamp": "00:08:50",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:09:07",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "can you write the task1 coroutine?"
+    },
+    {
+      "timestamp": "00:09:30",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:09:35",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:09:51",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "verifying code",
+      "codes": [
+        "question"
+      ],
+      "query": "how's it all look now?"
+    },
+    {
+      "timestamp": "00:10:00",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:10:23",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:10:50",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:14:58",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:15:15",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "show how to implement the get_user_data coroutine"
+    },
+    {
+      "timestamp": "00:15:45",
+      "event_type": "paste",
+      "task_id": "2",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:16:05",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:17:13",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 10,
+    "task1_active_time": 3,
+    "task1_complete": true,
+    "task2_total_time": 6,
+    "task2_active_time": 0,
+    "task2_complete": true
+  }
+}

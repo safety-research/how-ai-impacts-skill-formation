@@ -1,0 +1,212 @@
+{
+  "pid": 7,
+  "condition": "AI",
+  "main_task_minutes": 21,
+  "warmup_task_minutes": 7,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:48",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:02:33",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:04:09",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked for help in learning",
+      "codes": [
+        "code_generation",
+        "question"
+      ],
+      "query": "I'm new to the trio library and need help using it to build the async timer function in my main file. Can you help me write the timer function? The spec is in the docstring in the file. Please always explain how trio is working with the code so i can learn it!"
+    },
+    {
+      "timestamp": "00:04:39",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:05:06",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:05:17",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Ask for code generation with extra explanation",
+      "codes": [
+        "code_generation",
+        "question"
+      ],
+      "query": "yes please! lets work on task1 next. I have no idea what nurseries are"
+    },
+    {
+      "timestamp": "00:07:49",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:08:20",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:08:59",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "asking a question about code design",
+      "codes": [
+        "question"
+      ],
+      "query": "yes i def need delayed_hello before running this. Or will i learn something by running it with the error raised still there? how does trio handle errors while we are on the subject"
+    },
+    {
+      "timestamp": "00:09:08",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "NotImplementedError",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:10:27",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:10:38",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:11:01",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:11:13",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asking how to test this code",
+      "codes": [
+        "question"
+      ],
+      "query": "how would i test this code"
+    },
+    {
+      "timestamp": "00:14:25",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:14:35",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:15:23",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:16:34",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "Asks for code generation and explicitly asked for explanation",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "I'm new to the trio library, and need help implementing the get_user_data function in my open file. Can you follow the docstring to give me an implementation? pelase include explanation of trio usage for me to learn. keep comments to the essentials"
+    },
+    {
+      "timestamp": "00:17:38",
+      "event_type": "paste",
+      "task_id": "2",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:18:39",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:21:34",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 14,
+    "task1_active_time": 2,
+    "task1_complete": true,
+    "task2_total_time": 7,
+    "task2_active_time": 1,
+    "task2_complete": true
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "pid": 31,
+  "condition": "No-AI",
+  "main_task_minutes": 19,
+  "warmup_task_minutes": 7,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:34",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:07:36",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "NameError: name 'nusery' is not defined. Did you mean: 'nursery'?",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:07:55",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:08:22",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:08:26",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:17:05",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "NameError: name 'result' is not defined. Did you mean: 'results'?",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:17:35",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:18:09",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 8,
+    "task1_active_time": 3,
+    "task1_complete": true,
+    "task2_total_time": 10,
+    "task2_active_time": 4,
+    "task2_complete": true
+  }
+}

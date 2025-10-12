@@ -1,0 +1,97 @@
+{
+  "pid": 38,
+  "condition": "No-AI",
+  "main_task_minutes": 14,
+  "warmup_task_minutes": 3,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:00",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:06:22",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "SyntaxError: invalid syntax",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:07:48",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:07:53",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:08:13",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:12:55",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "NameError: name 'nursery_start_soon' is not defined",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:13:12",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "AttributeError: 'NoneType' object has no attribute 'items'",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:13:53",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:13:55",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 8,
+    "task1_active_time": 3,
+    "task1_complete": true,
+    "task2_total_time": 6,
+    "task2_active_time": 4,
+    "task2_complete": true
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "pid": 10,
+  "condition": "AI",
+  "main_task_minutes": 24,
+  "warmup_task_minutes": 11,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:43",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:04:50",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:05:10",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "code generation request phrased like a question",
+      "codes": [
+        "code_generation",
+        "question"
+      ],
+      "query": "To update the timer() according to the pydocstring, how would that be accomplished?"
+    },
+    {
+      "timestamp": "00:05:47",
+      "event_type": "code_copying",
+      "task_id": "1",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:06:30",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:06:43",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "debugging and checking existing code",
+      "codes": [
+        "question"
+      ],
+      "query": "Please check my implementation of the delayed_hello and tell me if it's correct according to what the pydocstring states"
+    },
+    {
+      "timestamp": "00:09:40",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:10:05",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "asking AI to verify code",
+      "codes": [
+        "question"
+      ],
+      "query": "Okay, similar to delayed_hello, please evaluate task1 and see if I've implemented it correctly"
+    },
+    {
+      "timestamp": "00:10:25",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:10:32",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "import error",
+      "codes": [
+        "debugging"
+      ],
+      "query": "Hmmm, I'm getting an error on the import trio line"
+    },
+    {
+      "timestamp": "00:10:51",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion."
+      ]
+    },
+    {
+      "timestamp": "00:11:10",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:11:26",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "asking to check that code is correct",
+      "codes": [
+        "question"
+      ],
+      "query": "I think it ran properly now, pls check"
+    },
+    {
+      "timestamp": "00:12:20",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:12:33",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:17:30",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:19:45",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asking for tips when stuck on a conceptual question",
+      "codes": [
+        "question"
+      ],
+      "query": "Okay, I'm trying to implement the get_user_data method. I'm supposed to create an async def _fetch_and_store() method inside that will make the call to get_user_id and stuff the results in the shared results dict that I already created in get_user_data. It should be an async call so it can grab them in parallel. I need to have a try/except to prevent everything from crashing. Please help me complete what I've started."
+    },
+    {
+      "timestamp": "00:22:23",
+      "event_type": "code_copying",
+      "task_id": "2",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:22:40",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:23:18",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asking for code verification",
+      "codes": [
+        "question"
+      ],
+      "query": "Okay, please review what's in the code pane and see if there's any obvious problems with it"
+    },
+    {
+      "timestamp": "00:23:45",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:24:40",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 12,
+    "task1_active_time": 3,
+    "task1_complete": true,
+    "task2_total_time": 12,
+    "task2_active_time": 4,
+    "task2_complete": true
+  }
+}

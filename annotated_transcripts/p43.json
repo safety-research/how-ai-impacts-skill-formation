@@ -1,0 +1,115 @@
+{
+  "pid": 43,
+  "condition": "No-AI",
+  "main_task_minutes": 35,
+  "warmup_task_minutes": 11,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:39",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:18:24",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "RuntimeWarning: coroutine 'sleep' was never awaited   trio.sleep(1)",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:20:25",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "RuntimeWarning: coroutine 'sleep' was never awaited   trio.sleep(1)",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:22:12",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:22:17",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:22:35",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:33:56",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "SyntaxError: invalid syntax",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:34:11",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "TypeError: Trio was expecting an async function, but instead it got a coroutine objec",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:34:44",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "AttributeError: 'NoneType' object has no attribute 'items'",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:35:05",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:35:25",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 22,
+    "task1_active_time": 7,
+    "task1_complete": true,
+    "task2_total_time": 13,
+    "task2_active_time": 4,
+    "task2_complete": true
+  }
+}

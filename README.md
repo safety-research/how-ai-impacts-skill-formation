@@ -1,2 +1,10 @@
-# skill-dev
-Repo for measuring whether using AI tools inhibits skill formation and development 
+# How AI Impacts Skill Formation
+This repository contains tasks and annotated datasets for the paper: How AI Impacts Skill Formation. 
+
+
+
+## Directory: 
+Task Instructions: `final_task/skill4_instructions.md`
+Starter Code: `final_task/trio_empty.py`
+Completed Solutions: `final_task/trio_task.py`
+Annotated Task Transcripts: `annotated_transcripts/`

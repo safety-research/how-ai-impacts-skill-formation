@@ -1,0 +1,391 @@
+{
+  "pid": 9,
+  "condition": "AI",
+  "main_task_minutes": 35,
+  "warmup_task_minutes": 9,
+  "main_task_observations": [
+    {
+      "timestamp": "00:01:13",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:04:52",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:05:49",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "asking about capabilities",
+      "codes": [
+        "capability_question"
+      ],
+      "query": "Are you aware of how trio works? Are there parallels in its execution model to another library I'd be more familiar with like asyncio"
+    },
+    {
+      "timestamp": "00:06:25",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:06:50",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "let's start by implementing this function. async def timer() -> None:\n\"\"\"Prints elapsed time in seconds, starting from 1. Waits 1 second before printing '1s', then prints each subsequent second ('2s', '3s', etc.) at 1-second intervals indefinitely."
+    },
+    {
+      "timestamp": "00:07:14",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:07:22",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:08:10",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI implementation question",
+      "codes": [
+        "question"
+      ],
+      "query": "this is non-blocking on the event look, correct? Yes, the function is async, but does the await only apply to the scope of this function? i.e. it won't block another function"
+    },
+    {
+      "timestamp": "00:08:28",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:09:06",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "implement delayed_hello(). It should simply sleep for 2.1 seconds upon which it prints 'Hello World!'"
+    },
+    {
+      "timestamp": "00:09:12",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:09:38",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:09:57",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "Ok let's just try having you implement this in full:\nasync def task1():\n\"\"\"\nIn this task, you will use the trio library to write two async functions.\nYour task is to complete the timer and delayed_hello functions.\n\"\"\"\nprint(\"Starting...\")\nTIMEOUT = 2.5\nwith trio.move_on_after(TIMEOUT):\n# TODO: start trio nursery\n# TODO: start timer function\n# TODO: start delayed_hello\npass\nprint(\"Completed!\")\nreturn"
+    },
+    {
+      "timestamp": "00:10:00",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:10:17",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:11:14",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:12:00",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:12:11",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:15:40",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:15:54",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "Asked AI query",
+      "codes": [
+        "capability_question"
+      ],
+      "query": "Are you aware of the current task desc?"
+    },
+    {
+      "timestamp": "00:16:01",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:16:24",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "give me the code for the trio's shared dict"
+    },
+    {
+      "timestamp": "00:16:36",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:16:51",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "Asked AI implementation question",
+      "codes": [
+        "question"
+      ],
+      "query": "yeah but do we have to register this results dict, oh this isn't real concurrency"
+    },
+    {
+      "timestamp": "00:17:42",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:18:38",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "ah yeah got it, ok I mean lets just implement get_user_data first, I see you've potentially already done that"
+    },
+    {
+      "timestamp": "00:19:30",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:19:57",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:20:55",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "Asked AI implementation question",
+      "codes": [
+        "question"
+      ],
+      "query": "ok this seemed too easy, is there any cleanup we need to do, I know we're using the context manager, but maybe help me understand and build a mental model for the way trio's event loop works"
+    },
+    {
+      "timestamp": "00:22:19",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:23:22",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "extension question",
+      "codes": [
+        "question"
+      ],
+      "query": "just curious, how does trio handle backpressure, I get the sense this is a simple illustration of different api services potentially with different thruputs or execution times"
+    },
+    {
+      "timestamp": "00:24:25",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:25:46",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "extension question",
+      "codes": [
+        "question"
+      ],
+      "query": "is there any way this current implementation of get_user_data could fail to preserve the output order if task2 were made more complex while still in keeping with the spirit of its logic and what it's trying to represent"
+    },
+    {
+      "timestamp": "00:30:00",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:30:16",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "extension question",
+      "codes": [
+        "question"
+      ],
+      "query": "why is the TIMEOUT 2.5?"
+    },
+    {
+      "timestamp": "00:30:35",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:31:30",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "extension question",
+      "codes": [
+        "question"
+      ],
+      "query": "is there a trio-onic way to accomplish this without resorting to a magic number? I get that it gets the job done for this simple example\n\n"
+    },
+    {
+      "timestamp": "00:32:40",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "TypeError: timer() takes 0 positional arguments but 1 was given",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:33:50",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:34:01",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI implementation question",
+      "codes": [
+        "debugging"
+      ],
+      "query": "time() takes 0 positional args errro"
+    }
+  ],
+  "summary": {
+    "task1_total_time": 19,
+    "task1_active_time": 2,
+    "task1_complete": true,
+    "task2_total_time": 16,
+    "task2_active_time": 0,
+    "task2_complete": true
+  }
+}

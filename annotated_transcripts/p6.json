@@ -1,0 +1,201 @@
+{
+  "pid": 6,
+  "condition": "AI",
+  "main_task_minutes": 18,
+  "warmup_task_minutes": 7,
+  "main_task_observations": [
+    {
+      "timestamp": "00:01:12",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:05:30",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:05:45",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI about capabilities",
+      "codes": [
+        "capability_question"
+      ],
+      "query": "Can you see the current question?"
+    },
+    {
+      "timestamp": "00:05:50",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:06:00",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "Now implement delayed hello function"
+    },
+    {
+      "timestamp": "00:06:16",
+      "event_type": "code_copying",
+      "task_id": "1",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:07:05",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:07:20",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "Now implement delayed hello function"
+    },
+    {
+      "timestamp": "00:07:30",
+      "event_type": "code_copying",
+      "task_id": "1",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:08:00",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:08:09",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "And now implement the task1 function"
+    },
+    {
+      "timestamp": "00:08:30",
+      "event_type": "code_copying",
+      "task_id": "1",
+      "description": "copy ai code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:09:18",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished T1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:09:50",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:09:54",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:13:28",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "started asking AI",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:14:05",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asked AI for code generation",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "Can you implement get_user_data function ensuring the implementation requirements are met?"
+    },
+    {
+      "timestamp": "00:14:30",
+      "event_type": "code_copying",
+      "task_id": "2",
+      "description": "copy ai code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:18:14",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "completed task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:18:36",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "task submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 9,
+    "task1_active_time": 2,
+    "task1_complete": true,
+    "task2_total_time": 9,
+    "task2_active_time": 3,
+    "task2_complete": true
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "pid": 4,
+  "condition": "AI",
+  "main_task_minutes": 22,
+  "warmup_task_minutes": 9,
+  "main_task_observations": [
+    {
+      "timestamp": "00:01:00",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:05:23",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:06:11",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "asked AI to generate code",
+      "query": "Using the below description of 'trio' and 'timer', write an implementation of 'timer'.",
+      "codes": [
+        "code_generation"
+      ]
+    },
+    {
+      "timestamp": "00:06:20",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:06:38",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:06:47",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "asked AI to generate code",
+      "query": "now implement delayed hello delayed_hello: This function waits for 2.1 seconds and then, after the delay, prints `Hello, World!`",
+      "codes": [
+        "code_generation"
+      ]
+    },
+    {
+      "timestamp": "00:07:05",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:07:13",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:07:26",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "asked AI to generate code",
+      "query": "now implement task1 task1: This function starts a nursery context and calls the timer and then the delayed_hello function",
+      "codes": [
+        "code_generation"
+      ]
+    },
+    {
+      "timestamp": "00:07:55",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:08:27",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished task 1 correctly",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:09:02",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Submitted task 1",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:09:24",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:11:48",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:12:30",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asked AI implementation question",
+      "query": "'Create a shared results dictionary inside get_user_data to store results.' how would I declare a dictionary as shared and available outside the scope of a function? is this standard or do I have to declare anything extra?",
+      "codes": [
+        "question"
+      ]
+    },
+    {
+      "timestamp": "00:14:33",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:20:41",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "Gave clarification to model, asks for code generation",
+      "query": "quick tips for 'trio' if you're not familiar -- a 'nursery' is a batch of async tasks, and 'start_soon' declared within a nursery takes a function as an argument and runs it asynchronously. After the end of the nursery block, all tasks will have been completed. we need to create a nursery in get_user_data that runs calls to get_user_id within a try-catch block, and if there is an error then the result is returned as 'error' else it is the result of get_user_id. It then stores the results in a shared dictionary. Make sure the results returned by get_user-data can be read by task2 for printing. Give full implementation of get_user_data",
+      "codes": [
+        "code_generation"
+      ]
+    },
+    {
+      "timestamp": "00:21:12",
+      "event_type": "paste",
+      "task_id": "2",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:21:24",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished task 2 correctly",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:21:26",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Submitted task 2",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 8,
+    "task1_active_time": 2,
+    "task1_complete": true,
+    "task2_total_time": 13,
+    "task2_active_time": 1,
+    "task2_complete": true
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "pid": 8,
+  "condition": "AI",
+  "main_task_minutes": 20,
+  "warmup_task_minutes": 4,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:30",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:04:39",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:08:08",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "asking about concurrency",
+      "codes": [
+        "question"
+      ],
+      "query": "is there a way in trio to have a function stop when another function has finished?"
+    },
+    {
+      "timestamp": "00:09:34",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:09:50",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "asking for debugging help",
+      "codes": [
+        "question"
+      ],
+      "query": "the code isn't running the timer function properly"
+    },
+    {
+      "timestamp": "00:10:24",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:11:13",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:11:37",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:14:35",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:15:03",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asking a conceptual question",
+      "codes": [
+        "question"
+      ],
+      "query": "how can i run an async function in a for loop"
+    },
+    {
+      "timestamp": "00:16:48",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:17:03",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asking a conceptual question",
+      "codes": [
+        "question"
+      ],
+      "query": "in tio how to make an async dictionary"
+    },
+    {
+      "timestamp": "00:18:51",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:19:15",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:19:36",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "question about error cases",
+      "codes": [
+        "question"
+      ],
+      "query": "are there ant issues that could cause a non-deterministic error in this code"
+    },
+    {
+      "timestamp": "00:20:26",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 11,
+    "task1_active_time": 4,
+    "task1_complete": true,
+    "task2_total_time": 9,
+    "task2_active_time": 3,
+    "task2_complete": true
+  }
+}

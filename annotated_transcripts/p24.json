@@ -1,0 +1,201 @@
+{
+  "pid": 24,
+  "condition": "AI",
+  "main_task_minutes": 32,
+  "warmup_task_minutes": 11,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:37",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:04:26",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:05:15",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "give me the code that will print a variable 'seconds' each 1 second that will be kept track of using the trio library"
+    },
+    {
+      "timestamp": "00:06:17",
+      "event_type": "code_copying",
+      "task_id": "1",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:06:23",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:06:47",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "Now write a function using trio that will sleep for 2.1 seconds before printing \"Hello World\""
+    },
+    {
+      "timestamp": "00:07:06",
+      "event_type": "code_copying",
+      "task_id": "1",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:07:42",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:08:01",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "now write a function that will call the previous two functions as children using trio"
+    },
+    {
+      "timestamp": "00:09:10",
+      "event_type": "code_copying",
+      "task_id": "1",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:09:21",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:10:11",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:10:20",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:15:28",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:17:53",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "write an async helper function called _fetch_and_store within the get_user_data function that will take a single user_id and safely call the async function get_user_id and upon success store the result in the 'results' dictionary else store the string 'error' in the dictionary."
+    },
+    {
+      "timestamp": "00:20:41",
+      "event_type": "code_copying",
+      "task_id": "2",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:20:46",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:21:31",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "now write code to asynchronously fetch all user_ids using the trio nursery within the get_user_data function"
+    },
+    {
+      "timestamp": "00:22:42",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:23:53",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 10,
+    "task1_active_time": 3,
+    "task1_complete": true,
+    "task2_total_time": 22,
+    "task2_active_time": 2,
+    "task2_complete": true
+  }
+}
