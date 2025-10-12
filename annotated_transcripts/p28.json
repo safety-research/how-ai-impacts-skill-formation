@@ -1,0 +1,70 @@
+{
+  "pid": 28,
+  "condition": "No-AI",
+  "main_task_minutes": 17,
+  "warmup_task_minutes": 4,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:41",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:08:20",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "NameError: name 'seconds' is not defined. Did you mean: 'second'?",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:09:12",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:09:22",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:16:21",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:17:30",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 9,
+    "task1_active_time": 4,
+    "task1_complete": true,
+    "task2_total_time": 8,
+    "task2_active_time": 4,
+    "task2_complete": true
+  }
+}

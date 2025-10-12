@@ -1,0 +1,135 @@
+{
+  "pid": 1,
+  "condition": "AI",
+  "main_task_minutes": 13,
+  "warmup_task_minutes": 10,
+  "main_task_observations": [
+    {
+      "timestamp": "00:01:09",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:06:22",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:06:58",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "asked for implementation of task 1",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "given this instruction to trio, can you implement the missing bits of main.py? [Task Instructions]"
+    },
+    {
+      "timestamp": "00:07:09",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:07:17",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:09:00",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:09:04",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:11:47",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:12:24",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asked for code generation",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "can you implement get_user_data such that the task2 function in main.py returns Results:\nUser 5: error\nUser 4: User-4\nUser 3: error\nUser 2: User-2\nUser 1: error\nwith gracefull error handling"
+    },
+    {
+      "timestamp": "00:12:44",
+      "event_type": "paste",
+      "task_id": "2",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:12:48",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "IndentationError",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:13:02",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:13:39",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_completion"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 8,
+    "task1_active_time": 1,
+    "task1_complete": true,
+    "task2_total_time": 5,
+    "task2_active_time": 1,
+    "task2_complete": true
+  }
+}

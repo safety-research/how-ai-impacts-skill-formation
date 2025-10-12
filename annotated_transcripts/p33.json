@@ -1,0 +1,106 @@
+{
+  "pid": 33,
+  "condition": "No-AI",
+  "main_task_minutes": 22,
+  "warmup_task_minutes": 7,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:48",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:07:59",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "RuntimeWarning: coroutine 'sleep' was never awaited   trio.sleep(1)",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:08:13",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "TypeError: Trio was expecting an async function, but instead it got a coroutine object",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:08:52",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "RuntimeWarning: coroutine 'sleep' was never awaited",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:09:22",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "code is correct but encountering timeout error, likely Code Signal error",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:10:54",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:11:05",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:21:01",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "TypeError: Trio was expecting an async function, but instead it got a coroutine object",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:21:42",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:21:50",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 10,
+    "task1_active_time": 5,
+    "task1_complete": true,
+    "task2_total_time": 11,
+    "task2_active_time": 4,
+    "task2_complete": true
+  }
+}

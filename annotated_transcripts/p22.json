@@ -1,0 +1,278 @@
+{
+  "pid": 22,
+  "condition": "AI",
+  "main_task_minutes": 31,
+  "warmup_task_minutes": 5,
+  "main_task_observations": [
+    {
+      "timestamp": "00:01:00",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:05:37",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:06:27",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "conceptual question, asked before reading all the documentation",
+      "codes": [
+        "question"
+      ],
+      "query": "Hi, I've never used trio before, can you help me with this task? Where should I start?"
+    },
+    {
+      "timestamp": "00:07:53",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "copied timer function",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:07:58",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:08:19",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation",
+        "debugging"
+      ],
+      "query": "Does that look right? If so let's move on to delayed_hello()"
+    },
+    {
+      "timestamp": "00:09:08",
+      "event_type": "code_copying",
+      "task_id": "1",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:09:09",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:09:26",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI to generate code",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "Ok, let's go to task1"
+    },
+    {
+      "timestamp": "00:10:31",
+      "event_type": "code_copying",
+      "task_id": "1",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:11:16",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:10:55",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:10:59",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI implementation question",
+      "codes": [
+        "debugging"
+      ],
+      "query": "How does it look?"
+    },
+    {
+      "timestamp": "00:11:30",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:11:33",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "thanked AI assistant",
+      "codes": [
+        "thanks"
+      ],
+      "query": "Looks like it worked, thanks!"
+    },
+    {
+      "timestamp": "00:11:54",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:11:56",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:19:00",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "re read instructions and wrote doc strings before asking for implementation",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:26:30",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asking AI for code after doing the basics",
+      "codes": [
+        "code_generation"
+      ],
+      "query": "Can you help me implement the get_user_data function? I put the basics in place"
+    },
+    {
+      "timestamp": "00:26:51",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:27:08",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asking AI for explanation",
+      "codes": [
+        "question"
+      ],
+      "query": "Let's see how it fits"
+    },
+    {
+      "timestamp": "00:27:50",
+      "event_type": "paste",
+      "task_id": "2",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "paste"
+      ]
+    },
+    {
+      "timestamp": "00:28:13",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:28:37",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "asking follow ups to understand AI code better",
+      "codes": [
+        "question"
+      ],
+      "query": "Is that it? Do you mind running through it for me so I understand a bit better?"
+    },
+    {
+      "timestamp": "00:29:02",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:30:32",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:31:30",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "following up question",
+      "codes": [
+        "question"
+      ],
+      "query": "Perfect - can you tell me why the order is sometimes reversed?"
+    },
+    {
+      "timestamp": "00:32:00",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 11,
+    "task1_active_time": 2,
+    "task1_complete": true,
+    "task2_total_time": 20,
+    "task2_active_time": 3,
+    "task2_complete": true
+  }
+}

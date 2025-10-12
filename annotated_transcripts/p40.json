@@ -1,0 +1,88 @@
+{
+  "pid": 40,
+  "condition": "No-AI",
+  "main_task_minutes": 31,
+  "warmup_task_minutes": 8,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:43",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:12:38",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:13:22",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:13:37",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:22:20",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "AttributeError: 'NoneType' object has no attribute 'items'",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:22:34",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "RuntimeWarning: coroutine 'get_user_id' was never awaited",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:30:46",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:31:18",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 13,
+    "task1_active_time": 5,
+    "task1_complete": true,
+    "task2_total_time": 18,
+    "task2_active_time": 7,
+    "task2_complete": true
+  }
+}

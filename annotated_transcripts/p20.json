@@ -1,0 +1,194 @@
+{
+  "pid": 20,
+  "condition": "AI",
+  "main_task_minutes": 34,
+  "warmup_task_minutes": 10,
+  "main_task_observations": [
+    {
+      "timestamp": "00:01:01",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:15:40",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "NameError: name `seconds' is not defined",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:15:45",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:15:52",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "user copied error directly",
+      "codes": [
+        "debugging"
+      ],
+      "query": "Exception Group Traceback (most recent call last):\n| File \"/usercode/FILESYSTEM/main.py3\", line 40, in\n| trio.run(task1)\n| File \"/opt/python/3.10.6/lib/python3.10/site-packages/trio/_core/_run.py\", line 2435, in run\n| raise runner.main_task_outcome.error\n| File \"/usercode/FILESYSTEM/main.py3\", line 32, in task1\n| async with trio.open_nursery() as nursery:\n| File \"/opt/python/3.10.6/lib/python3.10/site-packages/trio/_core/_run.py\", line 1070, in aexit\n| raise combined_error_from_nursery\n| exceptiongroup.ExceptionGroup: Exceptions from Trio nursery (1 sub-exception)\n+-+---------------- 1 ----------------\n| (most recent call last):\n| File \"/usercode/FILESYSTEM/main.py3\", line 14, in timer\n| print(f\"{seconds}s\")\n| NameError: name 'seconds' is not defined\n+------------------------------------\nFree-format output"
+    },
+    {
+      "timestamp": "00:17:29",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "NameError: 'true' not defined",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:17:55",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:17:58",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "direct paste",
+      "codes": [
+        "debugging"
+      ],
+      "query": "Exception Group Traceback (most recent call last):\n| File \"/usercode/FILESYSTEM/main.py3\", line 45, in\n| trio.run(task1)\n| File \"/opt/python/3.10.6/lib/python3.10/site-packages/trio/_core/_run.py\", line 2435, in run\n| raise runner.main_task_outcome.error\n| File \"/usercode/FILESYSTEM/main.py3\", line 36, in task1\n| async with trio.open_nursery() as nursery:\n| File \"/opt/python/3.10.6/lib/python3.10/site-packages/trio/_core/_run.py\", line 1070, in aexit\n| raise combined_error_from_nursery\n| exceptiongroup.ExceptionGroup: Exceptions from Trio nursery (1 sub-exception)\n+-+---------------- 1 ----------------\n| Traceback (most recent call last):\n| File \"/usercode/FILESYSTEM/main.py3\", line 15, in timer\n| while true:\n| NameError: name 'true' is not defined. Did you mean: 'True'?\n+------------------------------------"
+    },
+    {
+      "timestamp": "00:18:45",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:19:09",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "debugging question",
+      "codes": [
+        "debugging"
+      ],
+      "query": "Why is my code running twice instead of once?"
+    },
+    {
+      "timestamp": "00:19:35",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:19:51",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:26:40",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:26:53",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "generation question",
+      "codes": [
+        "question",
+        "code_generation"
+      ],
+      "query": "Help me with the try/except"
+    },
+    {
+      "timestamp": "00:28:20",
+      "event_type": "code_copying",
+      "task_id": "2",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:28:23",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "AttributeError: 'NoneType' object has no attribute 'items'. No results returned",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:30:30",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:31:06",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "user did not understand error, asked vague question",
+      "codes": [
+        "code_generation",
+        "question"
+      ],
+      "query": "Help me with the async trio function"
+    },
+    {
+      "timestamp": "00:33:03",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:33:20",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 20,
+    "task1_active_time": 6,
+    "task1_complete": true,
+    "task2_total_time": 14,
+    "task2_active_time": 3,
+    "task2_complete": true
+  }
+}

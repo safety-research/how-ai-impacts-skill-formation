@@ -1,0 +1,117 @@
+{
+  "pid": 29,
+  "condition": "No-AI",
+  "main_task_minutes": 34,
+  "warmup_task_minutes": 6,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:49",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:10:19",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "SyntaxError: invalid syntax \"seconds++\"",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:19:59",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "SyntaxError: invalid syntax",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:21:25",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task was not completed at submission. Did not include while loop.",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:21:57",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:26:13",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "AttributeError: 'NoneType' object has no attribute 'items'",
+      "codes": [
+        "Error"
+      ]
+    },
+    {
+      "timestamp": "00:31:08",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "IndentationError: expected an indented block after 'with' statement on line 45",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:31:45",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "IndentationError: expected an indented block after 'try' statement on line 50",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:32:00",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "NameError: name 'arg' is not defined",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:32:03",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "task was not complete, missing core logic with await",
+      "codes": [
+        "task_submission",
+        "incomplete"
+      ]
+    },
+    {
+      "timestamp": "00:34:57",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Did not finish task, still missing while loop",
+      "codes": [
+        "task_submission",
+        "incomplete"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 23,
+    "task1_active_time": 6,
+    "task1_complete": true,
+    "task2_total_time": 11,
+    "task2_active_time": 3,
+    "task2_complete": false
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "pid": 18,
+  "condition": "AI",
+  "main_task_minutes": 35,
+  "warmup_task_minutes": 9,
+  "main_task_observations": [
+    {
+      "timestamp": "00:00:18",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:07:16",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "NameError: typo",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:08:04",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:08:35",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:08:38",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:13:33",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:15:06",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "question about parameters",
+      "codes": [
+        "question"
+      ],
+      "query": "How do I pass arguments to an async function called via a trio nursery using start soon?"
+    },
+    {
+      "timestamp": "00:15:05",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:15:30",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "Asked AI query",
+      "codes": [
+        "question"
+      ],
+      "query": "Can a function called this way return a result?"
+    },
+    {
+      "timestamp": "00:18:08",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "ValueError: User 5 not found",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:19:05",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:19:22",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 8,
+    "task1_active_time": 3,
+    "task1_complete": true,
+    "task2_total_time": 11,
+    "task2_active_time": 5,
+    "task2_complete": true
+  }
+}

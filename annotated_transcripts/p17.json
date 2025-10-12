@@ -1,0 +1,153 @@
+{
+  "pid": 17,
+  "condition": "AI",
+  "main_task_minutes": 28,
+  "warmup_task_minutes": 10,
+  "main_task_observations": [
+    {
+      "timestamp": "00:01:17",
+      "event_type": "task_start",
+      "task_id": "1",
+      "description": "Started Task 1",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:11:24",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "RuntimeWarning: Sleep was never awaited",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:12:16",
+      "event_type": "error",
+      "task_id": "1",
+      "description": "NotImplementedError",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:12:23",
+      "event_type": "ai_interaction",
+      "task_id": "1",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:12:54",
+      "event_type": "ai_query",
+      "task_id": "1",
+      "description": "Asked AI implementation question",
+      "codes": [
+        "debugging"
+      ],
+      "query": "I'm having issues getting my code to work. I'm getting a notimplementederror for delayed_hello"
+    },
+    {
+      "timestamp": "00:13:38",
+      "event_type": "paste",
+      "task_id": "1",
+      "description": "Pasted in AI code to problem",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:13:57",
+      "event_type": "task_completion",
+      "task_id": "1",
+      "description": "Finished Task 1",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:14:14",
+      "event_type": "task_submission",
+      "task_id": "1",
+      "description": "Task 1 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    },
+    {
+      "timestamp": "00:14:30",
+      "event_type": "task_start",
+      "task_id": "2",
+      "description": "Started Task 2",
+      "codes": [
+        "task_start"
+      ]
+    },
+    {
+      "timestamp": "00:22:00",
+      "event_type": "ai_interaction",
+      "task_id": "2",
+      "description": "Started typing AI query",
+      "codes": [
+        "ai_interaction"
+      ]
+    },
+    {
+      "timestamp": "00:23:20",
+      "event_type": "ai_query",
+      "task_id": "2",
+      "description": "conceptual question",
+      "codes": [
+        "question"
+      ],
+      "query": "Hm I'm a little confused here. How can I get it to where it stores the result of each user id and error in the \"results\" dictionary? I may need to define a helper function. Can you walk me through it?"
+    },
+    {
+      "timestamp": "00:26:40",
+      "event_type": "code_copying",
+      "task_id": "2",
+      "description": "Copy AI code",
+      "codes": [
+        "code_copying"
+      ]
+    },
+    {
+      "timestamp": "00:27:30",
+      "event_type": "error",
+      "task_id": "2",
+      "description": "NameError: typo",
+      "codes": [
+        "error"
+      ]
+    },
+    {
+      "timestamp": "00:27:37",
+      "event_type": "task_completion",
+      "task_id": "2",
+      "description": "Finished Task 2",
+      "codes": [
+        "task_completion"
+      ]
+    },
+    {
+      "timestamp": "00:28:08",
+      "event_type": "task_submission",
+      "task_id": "2",
+      "description": "Task 2 Submitted",
+      "codes": [
+        "task_submission"
+      ]
+    }
+  ],
+  "summary": {
+    "task1_total_time": 13,
+    "task1_active_time": 4,
+    "task1_complete": true,
+    "task2_total_time": 14,
+    "task2_active_time": 4,
+    "task2_complete": true
+  }
+}
